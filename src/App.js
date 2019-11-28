@@ -1,12 +1,16 @@
 import React, { useState } from "react"
 import HomePage from "./pages/HomePage"
 
-function App() {
-  const [globalState, setGlobalStat] = useState({})
+const initialState = {}
 
+const StoreContext = React.createContext(initialState)
+
+function App() {
   return (
     <div>
-      <HomePage />
+      <StoreContext.Provider>
+        <HomePage />
+      </StoreContext.Provider>
     </div>
   )
 }

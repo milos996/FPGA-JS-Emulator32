@@ -1,25 +1,25 @@
 // NOP/MOV/IN/OUT/PUSH/POP/RET/IRET/HALT GROUP
-const OTHERS_GROUP = 0;
+const OTHERS_GROUP = 0
 
-const JUMP_GROUP = 1;
-const CALL_GROUP = 2;
-const LOAD_STORE_GROUP = 3;
-const ADD_SUB_GROUP = 4;
-const AND_OR_GROUP = 5;
-const XOR_NEG_GROUP = 6;
-const SHL_SHR_GROUP = 7;
-const MUL_DIV_GROUP = 8;
-const INC_DEC_GROUP = 9;
-const CMP_INV_GROUP = 10;
-const FLOATING_POINT_GROUP = 11;
-const LD_ST_GROUP = 12;
-const ALU_CMP_W_GROUP = 13;
-const ALU_CMP_B_GROUP = 14;
+const JUMP_GROUP = 1
+const CALL_GROUP = 2
+const LOAD_STORE_GROUP = 3
+const ADD_SUB_GROUP = 4
+const AND_OR_GROUP = 5
+const XOR_NEG_GROUP = 6
+const SHL_SHR_GROUP = 7
+const MUL_DIV_GROUP = 8
+const INC_DEC_GROUP = 9
+const CMP_INV_GROUP = 10
+const FLOATING_POINT_GROUP = 11
+const LD_ST_GROUP = 12
+const ALU_CMP_W_GROUP = 13
+const ALU_CMP_B_GROUP = 14
 
-const INSTRUCTIONS = {
+export const INSTRUCTIONS = {
   [OTHERS_GROUP]: {
-    0: "NOP",
-    1: "MOV_V_REGEX_REGY",
+    0: () => require("../services/instructions/others/Nop"),
+    1: () => require("../services/instructions/others/MovVRegexRegy"),
     2: "MOV_S_REG_XX",
     3: "IN_REG_XX",
     4: "OUT_XX_REG",
@@ -209,4 +209,4 @@ const INSTRUCTIONS = {
     8: "ALU_B_REG_XX",
     9: "CMP_B_REG_XX"
   }
-};
+}
