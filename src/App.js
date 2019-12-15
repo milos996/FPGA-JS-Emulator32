@@ -1,18 +1,18 @@
-import React, { useState } from "react"
-import HomePage from "./pages/HomePage"
-
-const initialState = {}
-
-const StoreContext = React.createContext(initialState)
+import React, { useReducer } from 'react';
+import HomePage from './pages/HomePage';
+import ApplicationContext from './context/Context';
+import { reducer, initialState } from './store/Reducer';
 
 function App() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
   return (
     <div>
-      <StoreContext.Provider>
+      <ApplicationContext.Provider value={{ state, dispatch }}>
         <HomePage />
-      </StoreContext.Provider>
+      </ApplicationContext.Provider>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
