@@ -1,0 +1,2 @@
+export const SET_MEMORY = 'SET_MEMORY';
+export const SET_INSTRUCTIONS = 'SET_INSTRUCTIONS';
