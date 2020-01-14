@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import fileParser from '@/services/parsers/FileParser';
 import cpuEngine from '@/services/cpu/CpuEngine';
 import ApplicationContext from '@/context/Context';
-import { SET_MEMORY } from '@/store/Actions';
+import { SET_MEMORY, SET_CONTEXT } from '@/store/Actions';
 
 export default function ControlComponent() {
   const [file, setFile] = useState(null);
@@ -16,7 +16,11 @@ export default function ControlComponent() {
     setFile(files[0]);
   }
 
-  function handleStart() {}
+  function handleStart() {
+    const { memory, context } = cpuEngine.run()
+    dispatch({ type: SET_MEMORY, payload: memory})
+    dispatch({type: SET_CONTEXT, payload: context})
+  }
 
   useEffect(() => {
     async function parseFile() {

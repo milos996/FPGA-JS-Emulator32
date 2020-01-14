@@ -8,7 +8,7 @@ export default function InstructionsComponent() {
 
   useEffect(() => {
     function parseMemoryToInstructions() {
-      const instructionsSet = cpuParser.parse(state.memory);
+      const instructionsSet = cpuParser.parse(state.memory, state.symbolTable);
 
       dispatch({ type: SET_INSTRUCTIONS, payload: instructionsSet });
     }

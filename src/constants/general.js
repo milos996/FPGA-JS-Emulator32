@@ -4,3 +4,5 @@ export const FILE_EXTENSIONS = {
   ASM: 'asm',
   BIN: 'bin'
 };
+
+export const MAX_NEG_SHORT_NUMBER = -32768;

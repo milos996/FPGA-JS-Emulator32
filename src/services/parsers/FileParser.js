@@ -32,13 +32,13 @@ class FileParser {
     let memory = Array(MEMORY_SIZE).fill(0);
 
     let words = lines.split(' ');
-    let addr = 0;
+    let address = 0;
     for (let i = 0; i < words.length; i++) {
       const word = words[i];
 
-      memory[addr++] = parseInt(word, 16);
+      memory[address++] = parseInt(word, 16);
       // if (EmulatorMain.DEBUG)
-      //   System.out.println(addr - 1 + ": " + w + " == " + memory[addr - 1])
+      //   System.out.println(address - 1 + ": " + w + " == " + memory[address - 1])
     }
 
     return memory;

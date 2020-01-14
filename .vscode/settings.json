@@ -1,3 +1,12 @@
 {
-  "editor.formatOnSave": true
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": false
+  },
+  "eslint.format.enable": true,
+  "prettier.singleQuote": true,
+  "prettier.semi": false,
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveTimeout": 500
 }

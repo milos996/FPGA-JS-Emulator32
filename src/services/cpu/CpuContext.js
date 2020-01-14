@@ -1,3 +1,5 @@
+// NOT USED
+
 import { MEMORY_SIZE } from '@/constants/general';
 import { INSTRUCTIONS } from '@/constants/instructions';
 import fileParser from '@/services/parsers/FileParser';
@@ -49,15 +51,17 @@ export default class CpuContext {
     let address = 0;
     while (!address === 1000000) {
       const instruction = this.getInstruction(address);
+
       address += 2;
       instruction.setContent();
       const lineLength = this.lines.push(instruction);
       instruction.tableLine = lineLength - 1;
+
       if (instruction.hasArgument) {
         address += instruction.argumentLength;
       }
 
-      this.addressInstruction[instruction.addr] = instruction;
+      this.addressInstruction[instruction.address] = instruction;
     }
   }
 
@@ -69,6 +73,6 @@ export default class CpuContext {
 
     const InstructionClass = INSTRUCTIONS[instructionRegister & 0xf][group]();
 
-    return new InstructionClass.default(memory, addr, source, destination);
+    return new InstructionClass.default(memory, address, source, destination);
   }
 }

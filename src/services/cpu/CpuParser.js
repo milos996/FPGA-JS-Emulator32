@@ -1,13 +1,13 @@
 import { INSTRUCTIONS } from '@/constants/instructions';
 
 class CpuParser {
-  parse(memory) {
+  parse(memory, symbolTable) {
     let address = 0;
     let lines = [];
     let addressInstruction = {};
 
     while (!address === 1000000) {
-      const instruction = this.getInstruction(address, memory);
+      const instruction = CpuParser.getInstruction(address, memory, symbolTable);
       address += 2;
       instruction.setContent();
       const lineLength = lines.push(instruction);
@@ -18,7 +18,7 @@ class CpuParser {
         address += instruction.argumentLength;
       }
 
-      addressInstruction[instruction.addr] = instruction;
+      addressInstruction[instruction.address] = instruction;
     }
 
     return {
@@ -27,7 +27,7 @@ class CpuParser {
     };
   }
 
-  getInstruction(address, memory) {
+  static getInstruction(address, memory, symbolTable) {
     const instructionRegister = memory[address / 2];
     const group = (instructionRegister >> 4) & 0xf;
     const source = (instructionRegister >> 12) & 0xf;
@@ -35,9 +35,12 @@ class CpuParser {
 
     const InstructionClass = INSTRUCTIONS[instructionRegister & 0xf][group]();
 
-    return new InstructionClass.default(memory, addr, source, destination);
+    return new InstructionClass.default(memory, address, source, destination, symbolTable);
   }
 }
 
-const cpuParse = new CpuParser();
-export default cpuParse;
+const cpuParser = new CpuParser();
+export  {
+  cpuParser,
+  CpuParser as CpuParserClass
+};

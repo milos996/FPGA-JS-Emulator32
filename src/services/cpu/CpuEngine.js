@@ -1,81 +1,185 @@
+import { CpuParserClass } from '@/services/cpu/CpuParser'
+import Instruction from '@/services/instructions/Instruction'
+
 class CpuEngine {
+	constructor() {
+		this.irq0 = false
+		this.irq2_pressed = false
+		this.irq2_released = false
+
+		this.irq0_address = 8
+		this.irq2_pressed_address = 32
+		this.irq2_released_address = 40
+		this.inIrq = false
+
+		this.memory = []
+		this.lines = []
+		this.addressInstruction = {}
+
+		this.context = {}
+
+		this.running = true
+	}
+
   run() {
-    if (
-      /*!inIrq && */ Engine.irq0 ||
-      Engine.irq2_pressed ||
-      Engine.irq2_released
-    ) {
-      //						inIrq = true;
-      prepareIrq();
-    }
+		this.running = true
 
-    instruction = ctx.mdl.addr_instr[Instruction.fix(ctx.pc.val)];
+		while (running) {
+	    if (
+	      this.irq0 ||
+	      this.irq2_pressed ||
+	      this.irq2_released
+	    ) {
+	      prepareIrq()
+	    }
 
-    if (i.breakPoint) {
-      stop();
-      break;
-    }
-    try {
-      i.exec(ctx);
-    } catch (Exception ex) {
-      ex.printStackTrace();
-      throw new Exception(ex.getMessage());
-    }
-    if (EmulatorMain.DEBUG)
-      publish(i);
+	    const instruction = this.addr_instruction[Instruction.fix(this.context.pc )]
+
+	    if (instruction.breakPoint) {
+	      this.stop()
+	      break
+			}
+
+	    try {
+				instruction.exec({
+					context: this.context,
+					memory: this.memory
+				})
+	    } catch (error) {
+				running = false
+				console.log(error)
+				throw error
+	    }
+
+			if (this.debug) {
+			}
+		}
+
+		return {
+			memory: this.memory,
+		  context: this.context
+		}
   }
 
-  private void prepareIrq() {
-		if (Engine.irq0 && (ctx.memory[Engine.IRQ0_ADDR]==0)) {
-			synchronized (this) { this.notify(); }
-			return;
+  prepareIrq() {
+		if (this.irq0 && this.memory[this.irq0_address] === 0) {
+			// synchronized (this) { this.notify() }
+			return
 		}
-		if (Engine.irq2_pressed && (ctx.memory[Engine.IRQ2_PRESSED_ADDR/2]==0)) {
-			synchronized (this) { this.notify(); }
-			return;
+
+		if (this.irq2_pressed && this.memory[this.irq2_pressed_address / 2] === 0) {
+			// synchronized (this) { this.notify() }
+			return
 		}
-		if (Engine.irq2_released && (ctx.memory[Engine.IRQ2_RELEASED_ADDR/2]==0)) {
-			synchronized (this) { this.notify(); }
-			return;
+
+		if (this.irq2_released && this.memory[this.irq2_released_address / 2] === 0) {
+			// synchronized (this) { this.notify() }
+			return
 		}
+
 		// Push flags
-		ctx.sp.val -= 2;
-		ctx.memory[Instruction.fix(ctx.sp.val) / 2] = (short)(ctx.f.val);
+		this.context.sp -= 2
+		this.memory[Instruction.fix(this.context.sp) / 2] = this.context.f
+
 		// Push PC
-		ctx.sp.val -= 4;
-		ctx.memory[Instruction.fix(ctx.sp.val ) / 2] = (short)(ctx.pc.val >> 16);
-		ctx.memory[Instruction.fix(ctx.sp.val + 2) / 2] = (short)(ctx.pc.val & 0xFFFF);
-		if (Engine.irq0) {
+		this.context.sp -= 4
+		memory[Instruction.fix(this.context.sp) / 2] = this.context.pc  >> 16
+		memory[Instruction.fix(this.context.sp + 2) / 2] = this.context.pc  & 0xFFFF
+
+		if (this.irq0) {
 			// Jump to the IRQ1 handler
-			ctx.pc.val = Engine.IRQ0_ADDR;
-			Instruction instr = ctx.mdl.getInstruction(ctx.memory, Engine.IRQ0_ADDR);
-			instr.setContent();
-			ctx.mdl.lines.set(Engine.IRQ0_ADDR, instr);
-			instr.tableLine = Engine.IRQ0_ADDR;
-			ctx.mdl.addr_instr[Engine.IRQ0_ADDR] = instr;
-			Engine.irq0 = false;
-		} else if (Engine.irq2_pressed) {
-			Engine.irq2_pressed = false;
+			this.context.pc  = this.irq0_address
+
+			let instruction = CpuParserClass.getInstruction(this.memory, this.irq0_address)
+			instruction.setContent()
+
+			this.lines[this.irq0_address] = instruction
+
+			instruction.tableLine = this.irq0_address
+
+			this.addressInstruction[this.irq0_address] = instruction
+
+			this.irq0 = false
+		} else if (this.irq2_pressed) {
+			this.irq2_pressed = false
 			// Jump to the IRQ2 pressed handler
-			ctx.pc.val = Engine.IRQ2_PRESSED_ADDR;
-			Instruction instr = ctx.mdl.getInstruction(ctx.memory, Engine.IRQ2_PRESSED_ADDR);
-			instr.setContent();
-			ctx.mdl.lines.set(Engine.IRQ2_PRESSED_ADDR, instr);
-			instr.tableLine = Engine.IRQ2_PRESSED_ADDR;
-			ctx.mdl.addr_instr[Engine.IRQ2_PRESSED_ADDR] = instr;
-		} else if (Engine.irq2_released) {
-			Engine.irq2_released = false;
+
+			this.context.pc  = this.irq2_pressed_address
+
+			let instruction = CpuParserClass.getInstruction(this.memory, this.irq2_pressed_address)
+			instruction.setContent()
+
+			this.lines[this.irq2_pressed_address]= instruction
+
+			instruction.tableLine = this.irq2_pressed_address
+
+			this.addressInstruction[this.irq2_pressed_address] = instruction
+		} else if (this.irq2_released) {
+			this.irq2_released = false
 			// Jump to the IRQ2 released handler
-			ctx.pc.val = Engine.IRQ2_RELEASED_ADDR;
-			Instruction instr = ctx.mdl.getInstruction(ctx.memory, Engine.IRQ2_RELEASED_ADDR);
-			instr.setContent();
-			ctx.mdl.lines.set(Engine.IRQ2_RELEASED_ADDR, instr);
-			instr.tableLine = Engine.IRQ2_RELEASED_ADDR;
-			ctx.mdl.addr_instr[Engine.IRQ2_RELEASED_ADDR] = instr;
+
+			this.context.pc  = this.irq2_released_address
+
+			let instruction = CpuParserClass.getInstruction(this.memory, this.irq2_released_address)
+			instruction.setContent()
+
+			this.lines[this.irq2_released_address] = instruction
+
+			instruction.tableLine = this.irq2_released_address
+
+			this.addressInstruction[this.irq2_released_address] = instruction
+		}
+	}
+
+  stop() {
+			this.running = false
+
+		// if (this.fromStepOver) {
+		// 	this.fromStepOver = false
+		// 	Instruction i = context.mdl.addr_instr[Instruction.fix(context.pc )]
+		// 	if (i.breakPointStepOver) {
+		// 		i.breakPointStepOver = false
+		// 		this.context.mdl.fireTableDataChanged()
+		// 	}
+		// }
+		// refreshUI(context.mdl.addr_instr[Instruction.fix(context.pc )])
+	}
+
+	inject(memory, lines, addressInstruction) {
+		this.memory = memory
+		this.lines = lines
+		this.addressInstruction = addressInstruction
+
+		this.context = {
+			r0: 0,
+			r1: 0,
+			r2: 0,
+			r3: 0,
+			r4: 0,
+			r5: 0,
+			r6: 0,
+			r7: 0,
+			r8: 0,
+			r9: 0,
+			r10: 0,
+			r11: 0,
+			r12: 0,
+			r13: 0,
+			pc: 0,
+			sp: 0,
+			h: 0,
+			f: 0
+		}
+	}
+
+	setContextField(field, value) {
+		this.context = {
+			...this.context,
+			[field]: value
 		}
 	}
 }
 
-const cpuEngine = new CpuEngine();
+const cpuEngine = new CpuEngine()
 
-export default cpuEngine;
+export default cpuEngine

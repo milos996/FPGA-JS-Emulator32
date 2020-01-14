@@ -1,2 +1,3 @@
-export const SET_MEMORY = 'SET_MEMORY';
-export const SET_INSTRUCTIONS = 'SET_INSTRUCTIONS';
+export const SET_MEMORY = 'SET_MEMORY'
+export const SET_INSTRUCTIONS = 'SET_INSTRUCTIONS'
+export const SET_CONTEXT = 'SET_CONTEXT'
