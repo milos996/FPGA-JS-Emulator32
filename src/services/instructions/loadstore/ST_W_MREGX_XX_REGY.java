@@ -1,7 +1,8 @@
-package emulator.source.loadstore
 
-import emulator.engine.CpuContext
- import Instruction from '../Instruction'import REGISTER_VALUE_NAME_MAPPER from '@/constants/registers'
+ import Instruction from '../Instruction'
+import { REGISTER_VALUE_NAME_MAPPER } from '@/constants/registers'
+
+const ASSEMBLER_INSTRUCTION_EXPRESSION = (sdestination, ssource) => `ld.s ${sdestination}, [${ssource}]`
 
 export default class ST_W_MREGX_XX_REGY extends Instruction {
 	public ST_W_MREGX_XX_REGY(memory, address, source, 
@@ -12,9 +13,9 @@ export default class ST_W_MREGX_XX_REGY extends Instruction {
 	}
 	
 	exec ({ context, memory }) {
-		setMemContent(context, (fix(context.getReg(this.destination)   +  this.argument)) / 2, context.getReg(this.source) , fix(context.getReg(this.destination)   +  this.argument))
+		setMemContent(context, (fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]]   +  this.argument)) / 2, context[REGISTER_VALUE_NAME_MAPPER[this.source]] , Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]]   +  this.argument))
 
 		context.pc  += 6
-		updateViewer32(context, fix(context.getReg(this.destination)  + this.argument), context.getReg(this.source) )
+		updateViewer32(context, Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  + this.argument), context[REGISTER_VALUE_NAME_MAPPER[this.source]] )
 	}
 }

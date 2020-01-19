@@ -1,7 +1,10 @@
 package emulator.source.incdec
 
 import emulator.engine.CpuContext
- import Instruction from '../Instruction'import REGISTER_VALUE_NAME_MAPPER from '@/constants/registers'
+ import Instruction from '../Instruction'
+import { REGISTER_VALUE_NAME_MAPPER } from '@/constants/registers'
+
+const ASSEMBLER_INSTRUCTION_EXPRESSION = (sdestination, ssource) => `ld.s ${sdestination}, [${ssource}]`
 
 export default class INC_B_MXX extends Instruction {
 	public INC_B_MXX(memory, address, source, 
@@ -13,7 +16,7 @@ export default class INC_B_MXX extends Instruction {
 
 	
 	exec ({ context, memory }) {
-		int fixedAddr = fix(this.argument)
+		int fixedAddr = Instruction.fix(this.argument)
 		short operand
 		if ((fixedAddr & 1) == 0)
 			operand = (short)((context.memory[fixedAddr / 2] >> 8) & 0xFF)
@@ -37,6 +40,6 @@ export default class INC_B_MXX extends Instruction {
 		markOverflow(operand, 1, (int)res, context)
 
 		context.pc  += 6
-		updateViewer(context, fix(this.argument), content)
+		updateViewer(context, Instruction.fix(this.argument), content)
 	}
 }

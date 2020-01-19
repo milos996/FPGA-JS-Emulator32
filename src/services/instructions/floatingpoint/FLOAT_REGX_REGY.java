@@ -3,12 +3,15 @@ package emulator.source.floatingpoint
 import java.nio.ByteBuffer
 
 import emulator.engine.CpuContext
- import Instruction from '../Instruction'import REGISTER_VALUE_NAME_MAPPER from '@/constants/registers'
+ import Instruction from '../Instruction'
+import { REGISTER_VALUE_NAME_MAPPER } from '@/constants/registers'
+
+const ASSEMBLER_INSTRUCTION_EXPRESSION = (sdestination, ssource) => `ld.s ${sdestination}, [${ssource}]`
 
 export default class FLOAT_REGX_REGY extends Instruction {
 	int type
 
-	public FLOAT_REGX_REGY(short[] memory, int address, int source, int destination, int type) {
+	public FLOAT_REGX_REGY(memory, address, source, destination, type) {
 		super(memory, address, source, destination)
 		super.setAssembler(Instruction.getTypeStr(type) + this.sdest + ", " + this.ssource)
 		this.type = type
@@ -16,27 +19,27 @@ export default class FLOAT_REGX_REGY extends Instruction {
 
 	
 	exec ({ context, memory }) {
-//		short old_a = context.getReg(this.destination) 
+//		short old_a = context[REGISTER_VALUE_NAME_MAPPER[this.destination]] 
 		float res = 0
 		switch (type) {
 		case FADD:
-			res = int2float(context.getReg(this.destination) ) + int2float(context.getReg(this.source) ) 
+			res = int2float(context[REGISTER_VALUE_NAME_MAPPER[this.destination]] ) + int2float(context[REGISTER_VALUE_NAME_MAPPER[this.source]] ) 
 			break
 		case FSUB:
-			res = int2float(context.getReg(this.destination) ) - int2float(context.getReg(this.source) ) 
+			res = int2float(context[REGISTER_VALUE_NAME_MAPPER[this.destination]] ) - int2float(context[REGISTER_VALUE_NAME_MAPPER[this.source]] ) 
 			break
 		case FMUL:
-			res = int2float(context.getReg(this.destination) ) * int2float(context.getReg(this.source) ) 
+			res = int2float(context[REGISTER_VALUE_NAME_MAPPER[this.destination]] ) * int2float(context[REGISTER_VALUE_NAME_MAPPER[this.source]] ) 
 			break
 		case FDIV:
-			res = int2float(context.getReg(this.destination) ) / int2float(context.getReg(this.source) ) 
+			res = int2float(context[REGISTER_VALUE_NAME_MAPPER[this.destination]] ) / int2float(context[REGISTER_VALUE_NAME_MAPPER[this.source]] ) 
 			break
 		default:
 			throw new RuntimeException("Unsupported operation type: " + type)
 		}
-		context.getReg(this.destination)  = (int)float2int(res)
-//		markFlags(res, context.getReg(this.destination) , context)
-//		markOverflow(old_a, context.getReg(this.source) , context.getReg(this.destination) , context)
+		context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  = (int)float2int(res)
+//		markFlags(res, context[REGISTER_VALUE_NAME_MAPPER[this.destination]] , context)
+//		markOverflow(old_a, context[REGISTER_VALUE_NAME_MAPPER[this.source]] , context[REGISTER_VALUE_NAME_MAPPER[this.destination]] , context)
 		context.pc  += 2
 	}
 

@@ -1,7 +1,10 @@
 package emulator.source.cmpinv
 
 import emulator.engine.CpuContext
- import Instruction from '../Instruction'import REGISTER_VALUE_NAME_MAPPER from '@/constants/registers'
+ import Instruction from '../Instruction'
+import { REGISTER_VALUE_NAME_MAPPER } from '@/constants/registers'
+
+const ASSEMBLER_INSTRUCTION_EXPRESSION = (sdestination, ssource) => `ld.s ${sdestination}, [${ssource}]`
 
 export default class INV_S_MXX extends Instruction {
 	public INV_S_MXX(memory, address, source, 
@@ -17,6 +20,6 @@ export default class INV_S_MXX extends Instruction {
 		context.memory[fix(this.argument) / 2] = (short)res
 		markFlags(res, (int)res, context)
 		context.pc  += 6
-		updateViewer(context, fix(this.argument), (int)res)
+		updateViewer(context, Instruction.fix(this.argument), (int)res)
 	}
 }

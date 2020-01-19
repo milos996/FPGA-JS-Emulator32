@@ -1,7 +1,10 @@
 package emulator.source.cmpinv
 
 import emulator.engine.CpuContext
- import Instruction from '../Instruction'import REGISTER_VALUE_NAME_MAPPER from '@/constants/registers'
+ import Instruction from '../Instruction'
+import { REGISTER_VALUE_NAME_MAPPER } from '@/constants/registers'
+
+const ASSEMBLER_INSTRUCTION_EXPRESSION = (sdestination, ssource) => `ld.s ${sdestination}, [${ssource}]`
 
 export default class CMP_W_REGX_MREGY_XX extends Instruction {
 	public CMP_W_REGX_MREGY_XX(memory, address, source, 
@@ -13,10 +16,10 @@ export default class CMP_W_REGX_MREGY_XX extends Instruction {
 	
 	
 	exec ({ context, memory }) {
-		int old_a = context.getReg(this.destination) 
-		long res = context.getReg(this.destination)  - getMemContent(context, fix(context.getReg(this.source)  + this.argument) / 2, fix(context.getReg(this.source)  + this.argument))
+		int old_a = context[REGISTER_VALUE_NAME_MAPPER[this.destination]] 
+		long res = context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  - getMemContent(context, Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]]  + this.argument) / 2, Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]]  + this.argument))
 		markFlags(res, (int)res, context)
-		markOverflow(old_a, getMemContent(context, fix(context.getReg(this.source)  + this.argument) / 2, fix(context.getReg(this.source)  + this.argument)), (int)res, context)
+		markOverflow(old_a, getMemContent(context, Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]]  + this.argument) / 2, Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]]  + this.argument)), (int)res, context)
 		context.pc  += 6
 	}
 }

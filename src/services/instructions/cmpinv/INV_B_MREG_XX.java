@@ -1,7 +1,10 @@
 package emulator.source.cmpinv
 
 import emulator.engine.CpuContext
- import Instruction from '../Instruction'import REGISTER_VALUE_NAME_MAPPER from '@/constants/registers'
+ import Instruction from '../Instruction'
+import { REGISTER_VALUE_NAME_MAPPER } from '@/constants/registers'
+
+const ASSEMBLER_INSTRUCTION_EXPRESSION = (sdestination, ssource) => `ld.s ${sdestination}, [${ssource}]`
 
 export default class INV_B_MREG_XX extends Instruction {
 	public INV_B_MREG_XX(memory, address, source, 
@@ -13,7 +16,7 @@ export default class INV_B_MREG_XX extends Instruction {
 
 	
 	exec ({ context, memory }) {
-		int fixedAddr = fix(context.getReg(this.destination)  + this.argument)
+		int fixedAddr = Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  + this.argument)
 		short operand
 		if ((fixedAddr & 1) == 0)
 			operand = (short)((context.memory[fixedAddr / 2] >> 8) & 0xFF)
@@ -35,6 +38,6 @@ export default class INV_B_MREG_XX extends Instruction {
 		
 		markFlags(res, (int)res, context)
 		context.pc  += 6
-		updateViewer(context, fix(context.getReg(this.destination)  + this.argument), content)
+		updateViewer(context, Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  + this.argument), content)
 	}
 }

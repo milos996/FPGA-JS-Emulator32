@@ -33,7 +33,12 @@ class CpuParser {
     const source = (instructionRegister >> 12) & 0xf;
     const destination = (instructionRegister >> 8) & 0xf;
 
-    const InstructionClass = INSTRUCTIONS[instructionRegister & 0xf][group]();
+    const InstructionObject = INSTRUCTIONS[instructionRegister & 0xf][group]
+    const {class: InstructionClass, type = null} = InstructionObject
+
+    if (!!type) {
+      return new InstructionClass.default(memory, address, source, destination, type, symbolTable);
+    }
 
     return new InstructionClass.default(memory, address, source, destination, symbolTable);
   }

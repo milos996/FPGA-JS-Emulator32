@@ -1,7 +1,8 @@
-package emulator.source.loadstore
 
-import emulator.engine.CpuContext
- import Instruction from '../Instruction'import REGISTER_VALUE_NAME_MAPPER from '@/constants/registers'
+ import Instruction from '../Instruction'
+import { REGISTER_VALUE_NAME_MAPPER } from '@/constants/registers'
+
+const ASSEMBLER_INSTRUCTION_EXPRESSION = (sdestination, ssource) => `ld.s ${sdestination}, [${ssource}]`
 
 export default class LD_REGX_MREGY_XX extends Instruction {
 	public LD_REGX_MREGY_XX(memory, address, source, 
@@ -13,8 +14,8 @@ export default class LD_REGX_MREGY_XX extends Instruction {
 	
 	
 	exec ({ context, memory }) {
-		int address = fix(context.getReg(this.source)  + this.argument)
-		context.getReg(this.destination)  = context.memory[address / 2] & 0xFFFF
+		int address = Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]]  + this.argument)
+		context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  = context.memory[address / 2] & 0xFFFF
 		context.pc  += 6 
 	}
 }

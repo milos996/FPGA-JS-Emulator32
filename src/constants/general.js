@@ -5,4 +5,7 @@ export const FILE_EXTENSIONS = {
   BIN: 'bin'
 };
 
-export const MAX_NEG_SHORT_NUMBER = -32768;
+export const SHORT_NUMBER = {
+  MIN: -32768,
+  MAX: 32767
+}
