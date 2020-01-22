@@ -22,12 +22,12 @@ export default class AluBRegXX extends Instruction {
 			this.argument
 		)
 
-		switch (type) {
-			case MUL_B:	result =
+		switch (this.type) {
+			case INSTRUCTION_TYPES.MUL_B:	result =
 				// context.h  = (byte)((result & 0xffffffff00000000L) >> 32)
 				context.h  = (result & 0xffffffff00000000) >> 32
 				break
-			case DIV_B:
+			case INSTRUCTION_TYPES.DIV_B:
 				// context.h  = (byte)(context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  % this.argument)
 				context.h  = context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  % this.argument
 				break

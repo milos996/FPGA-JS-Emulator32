@@ -10,12 +10,13 @@ export default class LdWRegMXX extends Instruction {
 		super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION(this.sdestination))
 	}
 
-	exec ({ context }) {
+	exec ({ context, memory }) {
 		context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  =
 		  Instruction.getMemContent(
 				context,
 			  Instruction.fix(this.argument / 2),
-				Instruction.fix(this.argument)
+				Instruction.fix(this.argument),
+				memory
 			)
 
 		context.pc  += 6

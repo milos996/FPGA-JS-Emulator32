@@ -9,10 +9,10 @@ export default class SwapRegXRegY extends Instruction {
 		super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION(this.sdestination, this.ssource))
 	}
 
-	exec ({ context, memory }) {
+	exec ({ context }) {
 		const t = context[REGISTER_VALUE_NAME_MAPPER[this.destination]]
-		context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  = context[REGISTER_VALUE_NAME_MAPPER[this.source]]]
-		context[REGISTER_VALUE_NAME_MAPPER[this.source]]] = t
+		context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  = context[REGISTER_VALUE_NAME_MAPPER[this.source]]
+		context[REGISTER_VALUE_NAME_MAPPER[this.source]] = t
 
 		context.pc += 2
 	}

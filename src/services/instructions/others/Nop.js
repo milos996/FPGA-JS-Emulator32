@@ -6,7 +6,7 @@ export default class Nop extends Instruction {
 		super.setContent()
 	}
 
-	exec ({ context, memory })context) {
+	exec ({ context, memory }) {
 		context.pc += 2
 	}
 }

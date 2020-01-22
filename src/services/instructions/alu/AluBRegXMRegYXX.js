@@ -53,10 +53,10 @@ export default class AluBRegXMRegYXX extends Instruction {
 			operand
 		)
 
-		switch (type) {
+		switch (this.type) {
 			case INSTRUCTION_TYPES.MUL_B:
-				//TODO byte cast and L number -->> context.h  = (byte)((res & 0xffffffff00000000L) >> 32)
-				context.h  = (res & 0xffffffff00000000) >> 32
+				//TODO byte cast and L number -->> context.h  = (byte)((result & 0xffffffff00000000L) >> 32)
+				context.h  = (result & 0xffffffff00000000) >> 32
 				break
 			case INSTRUCTION_TYPES.DIV_B:
 				// TODO: cast to byte -->> context.h  = (byte)(context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  % operand)

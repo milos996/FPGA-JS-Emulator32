@@ -25,7 +25,7 @@ export default class AluSRegXX extends Instruction {
 
 		switch (this.type) {
 			case INSTRUCTION_TYPES.MUL_S:
-				//TODO: int cast and L for hex number -->> context.h  = (int)((res & 0xffffffff00000000L) >> 32)
+				//TODO: int cast and L for hex number -->> context.h  = (int)((result & 0xffffffff00000000L) >> 32)
 				context.h  = (result & 0xffffffff00000000) >> 32
 				break
 		  case INSTRUCTION_TYPES.DIV_S:
@@ -35,7 +35,7 @@ export default class AluSRegXX extends Instruction {
 		}
 
 		context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  = result
-		Instruction.markFlags(res, context[REGISTER_VALUE_NAME_MAPPER[this.destination]] , context)
+		Instruction.markFlags(result, context[REGISTER_VALUE_NAME_MAPPER[this.destination]] , context)
 		Instruction.markOverflow(old_a, this.argument, context[REGISTER_VALUE_NAME_MAPPER[this.destination]] , context)
 		context.pc  += 4
 	}

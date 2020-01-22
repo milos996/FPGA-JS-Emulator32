@@ -26,11 +26,11 @@ export default class AluWRegXX extends Instruction {
 		)
 
 		switch (this.type) {
-			case MUL_W:
+			case INSTRUCTION_TYPES.MUL_W:
 				//TODO: int cast and L type of numbber -->> context.h  = (int)((result & 0xffffffff00000000L) >> 32)
 				context.h  = (result & 0xffffffff00000000) >> 32
 				break
-			case DIV_W:
+			case INSTRUCTION_TYPES.DIV_W:
 				context.h  = context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  % this.argument
 				break
 		}

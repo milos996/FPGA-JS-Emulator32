@@ -6,7 +6,7 @@ class FileParser {
       if (file === null) {
         reject(null);
       }
-
+      //TODO: This can't work like this, because you need to read file as text file not as binary. Fix this
       const reader = new FileReader();
 
       reader.onload = e => {
@@ -28,6 +28,8 @@ class FileParser {
   }
 
   asmParse(lines) {
+    console.log({lines})
+
     //TODO: Check this, how it works
     let memory = Array(MEMORY_SIZE).fill(0);
 

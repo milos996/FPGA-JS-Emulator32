@@ -267,14 +267,14 @@ export const INSTRUCTIONS = {
 
   [ALU_CMP_B_GROUP]: {
     0: { class: () => require('@/services/instructions/alu/AluBRegXX'), type: INSTRUCTION_TYPES.ADD_B},
-    1: { class: () => require('@/services/instructions/alu/ALU_B_REG_XX'), type: INSTRUCTION_TYPES.SUB_B},
-    2: { class: () => require('@/services/instructions/alu/ALU_B_REG_XX'), type: INSTRUCTION_TYPES.AND_B},
-    3: { class: () => require('@/services/instructions/alu/ALU_B_REG_XX'), type: INSTRUCTION_TYPES.OR_B},
-    4: { class: () => require('@/services/instructions/alu/ALU_B_REG_XX'), type: INSTRUCTION_TYPES.XOR_B},
-    5: { class: () => require('@/services/instructions/alu/ALU_B_REG_XX'), type: INSTRUCTION_TYPES.SHL_B},
-    6: { class: () => require('@/services/instructions/alu/ALU_B_REG_XX'), type: INSTRUCTION_TYPES.SHR_B},
-    7: { class: () => require('@/services/instructions/alu/ALU_B_REG_XX'), type: INSTRUCTION_TYPES.MUL_B},
-    8: { class: () => require('@/services/instructions/alu/ALU_B_REG_XX'), type: INSTRUCTION_TYPES.DIV_B},
+    1: { class: () => require('@/services/instructions/alu/AluBRegXX'), type: INSTRUCTION_TYPES.SUB_B},
+    2: { class: () => require('@/services/instructions/alu/AluBRegXX'), type: INSTRUCTION_TYPES.AND_B},
+    3: { class: () => require('@/services/instructions/alu/AluBRegXX'), type: INSTRUCTION_TYPES.OR_B},
+    4: { class: () => require('@/services/instructions/alu/AluBRegXX'), type: INSTRUCTION_TYPES.XOR_B},
+    5: { class: () => require('@/services/instructions/alu/AluBRegXX'), type: INSTRUCTION_TYPES.SHL_B},
+    6: { class: () => require('@/services/instructions/alu/AluBRegXX'), type: INSTRUCTION_TYPES.SHR_B},
+    7: { class: () => require('@/services/instructions/alu/AluBRegXX'), type: INSTRUCTION_TYPES.MUL_B},
+    8: { class: () => require('@/services/instructions/alu/AluBRegXX'), type: INSTRUCTION_TYPES.DIV_B},
     9: { class: () => require('@/services/instructions/cmpinv/CmpBRegXX')}
   }
 };

@@ -12,7 +12,7 @@ export default class InRegXX extends Instruction {
 		super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION(this.sdestination))
 	}
 
-	exec ({ context, memory })context) {
+	exec ({ context }) {
 		// TODO: context.fromPort(this.argument) <<----- implement this
 		context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  = context.fromPort(this.argument)
 		context.pc  += 4

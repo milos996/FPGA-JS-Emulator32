@@ -11,12 +11,13 @@ export default class NegWMreGXX extends Instruction {
 		super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION(this.sdestination))
 	}
 
-	exec ({ context }) {
+	exec ({ context, memory }) {
 		//TODO long type -->> long result = ....
 		const result = -Instruction.getMemContent(
 			context,
 			Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  + this.argument) / 2,
-			Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  + this.argument)
+			Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  + this.argument),
+			memory
 		)
 
 		Instruction.setMemContent(context,

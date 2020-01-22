@@ -11,11 +11,12 @@ export default class InvWMRegXX extends Instruction {
 	}
 
 
-	exec ({ context }) {
+	exec ({ context, memory }) {
 		const result = ~Instruction.getMemContent(
 			context,
 			Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  + this.argument) / 2,
-			Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  + this.argument)
+			Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  + this.argument),
+			memory
 		)
 
 		Instruction.setMemContent(

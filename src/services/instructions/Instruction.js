@@ -166,7 +166,7 @@ class Instruction {
       for (let j = 0; j < l.length; j++) {
         const lbl = l[j]
 
-				if (lbl.includes(i.symAddr)) {
+				if (lbl.includes(instruction.symbolAddress)) {
 					return j;
 				}
 			}
@@ -252,11 +252,12 @@ class Instruction {
     return w & 0xFFFFFFFF
   }
 
-  static getMemContent(context, address, realAddress) {
+  static getMemContent(context, address, realAddress, memory) {
 		if (realAddress & 0x80000000 != 0) {
 			switch (realAddress & 0x7FFFFFFF) {
-  			case 64: return ctx.uart
-  			case 69: return (int) (System.nanoTime() >> 20)
+  			//TODO: Do not have uart inside context, maybe not necessary
+  			case 64: return context.uart
+  			case 69: return (+(new Date()) >> 20)
         default: return 0
 			}
     }
@@ -267,8 +268,8 @@ class Instruction {
      * short w1 = (short) (ctx.memory[addr]);
      * short w2 = (short) (ctx.memory[addr + 1]);
      */
-		const w1 = context.memory[address]
-    const w2 = context.memory[address + 1]
+		const w1 = memory[address]
+    const w2 = memory[address + 1]
 
 		return Instruction.fixInt(w1, w2);
 	}

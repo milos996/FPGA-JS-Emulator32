@@ -30,7 +30,7 @@ export default class AluSRegXMRegYXX extends Instruction {
 			memory[Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]]  + this.argument) / 2]
 		)
 
-		switch (type) {
+		switch (this.type) {
 			case INSTRUCTION_TYPES.MUL_S:
 				//TODO: int cast and L number -->> context.h  = (int)((res & 0xffffffff00000000L) >> 32)
 				context.h  = (result & 0xffffffff00000000) >> 32
@@ -47,7 +47,7 @@ export default class AluSRegXMRegYXX extends Instruction {
 		Instruction.markFlags(result, context[REGISTER_VALUE_NAME_MAPPER[this.destination]] , context)
 		Instruction.markOverflow(
 			old_a,
-			memory[fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]]  + this.argument) / 2],
+			memory[Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]]  + this.argument) / 2],
 			context[REGISTER_VALUE_NAME_MAPPER[this.destination]] , context
 		)
 

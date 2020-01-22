@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import ApplicationContext from '@/context/Context';
-import cpuParser from '@/services/cpu/CpuParser';
+import { cpuParser } from '@/services/cpu/CpuParser';
 import { SET_INSTRUCTIONS } from '@/store/Actions';
 
 export default function InstructionsComponent() {

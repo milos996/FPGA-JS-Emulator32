@@ -24,13 +24,13 @@ class CpuEngine {
   run() {
 		this.running = true
 
-		while (running) {
+		while (this.running) {
 	    if (
 	      this.irq0 ||
 	      this.irq2_pressed ||
 	      this.irq2_released
 	    ) {
-	      prepareIrq()
+	      this.prepareIrq()
 	    }
 
 	    const instruction = this.addr_instruction[Instruction.fix(this.context.pc )]
@@ -46,7 +46,7 @@ class CpuEngine {
 					memory: this.memory
 				})
 	    } catch (error) {
-				running = false
+				this.running = false
 				console.log(error)
 				throw error
 	    }
@@ -83,8 +83,8 @@ class CpuEngine {
 
 		// Push PC
 		this.context.sp -= 4
-		memory[Instruction.fix(this.context.sp) / 2] = this.context.pc  >> 16
-		memory[Instruction.fix(this.context.sp + 2) / 2] = this.context.pc  & 0xFFFF
+		this.memory[Instruction.fix(this.context.sp) / 2] = this.context.pc  >> 16
+		this.memory[Instruction.fix(this.context.sp + 2) / 2] = this.context.pc  & 0xFFFF
 
 		if (this.irq0) {
 			// Jump to the IRQ1 handler

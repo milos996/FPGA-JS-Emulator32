@@ -14,7 +14,7 @@ export default class AluWRegXMRegYXX extends Instruction {
 	}
 
 
-	exec ({ context }) {
+	exec ({ context, memory }) {
 		const old_a = context[REGISTER_VALUE_NAME_MAPPER[this.destination]]
 
 		let result = 0
@@ -26,11 +26,12 @@ export default class AluWRegXMRegYXX extends Instruction {
 			Instruction.getMemContent(
 				context,
 				parameter / 2,
-				parameter
+				parameter,
+				memory
 			)
 		)
 
-		switch (type) {
+		switch (this.type) {
 			case INSTRUCTION_TYPES.MUL_W:
 				//TODO: int cast with `L` (long) number -->> context.h  = (int)((res & 0xffffffff00000000L) >> 32)
 				context.h  = (result & 0xffffffff00000000) >> 32
@@ -41,7 +42,8 @@ export default class AluWRegXMRegYXX extends Instruction {
 					Instruction.getMemContent(
 						context,
 						Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]]  + this.argument) / 2,
-						Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]]  + this.argument)
+						Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]]  + this.argument),
+						memory
 					)
 				break
 		}
@@ -55,7 +57,8 @@ export default class AluWRegXMRegYXX extends Instruction {
 			Instruction.getMemContent(
 				context,
 				Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]]  + this.argument) / 2,
-				Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]]  + this.argument)
+				Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]]  + this.argument),
+				memory
 			),
 			context[REGISTER_VALUE_NAME_MAPPER[this.destination]],
 			context
