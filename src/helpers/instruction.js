@@ -28,4 +28,8 @@ export const INSTRUCTIONS_TYPE_FUNCTION_COMPUTATIONS = {
   [INSTRUCTION_TYPES.SHR_B]: (firstNumber, secondNumber) => firstNumber >>> secondNumber,
   [INSTRUCTION_TYPES.MUL_B]: (firstNumber, secondNumber) => firstNumber * secondNumber,
   [INSTRUCTION_TYPES.DIV_B]: (firstNumber, secondNumber) => firstNumber / secondNumber,
+  [INSTRUCTION_TYPES.FADD]: (firstNumber, secondNumber) => firstNumber + secondNumber,
+  [INSTRUCTION_TYPES.FSUB]: (firstNumber, secondNumber) => firstNumber - secondNumber,
+  [INSTRUCTION_TYPES.FMUL]: (firstNumber, secondNumber) => firstNumber * secondNumber,
+  [INSTRUCTION_TYPES.FDIV]: (firstNumber, secondNumber) => firstNumber / secondNumber
 }

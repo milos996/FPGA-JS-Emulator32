@@ -39,7 +39,7 @@ export default class NEG_B_MXX extends Instruction {
 
 		context.memory[fixedAddr / 2] = content
 
-		markFlags(res, (int)res, context)
+		Instruction.markFlags(res, (int)res, context)
 		context.pc  += 6
 		updateViewer(context, Instruction.fix(this.argument), content)
 	}

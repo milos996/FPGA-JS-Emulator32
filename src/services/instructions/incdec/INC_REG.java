@@ -1,6 +1,4 @@
-package emulator.source.incdec
 
-import emulator.engine.CpuContext
  import Instruction from '../Instruction'
 import { REGISTER_VALUE_NAME_MAPPER } from '@/constants/registers'
 
@@ -18,8 +16,8 @@ export default class INC_REG extends Instruction {
 		int old = context[REGISTER_VALUE_NAME_MAPPER[this.destination]] 
 		long res = old + 1
 		context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  = (int)res
-		markFlags(res, context[REGISTER_VALUE_NAME_MAPPER[this.destination]] , context)
-		markOverflow(old, 1, (int)res, context)
+		Instruction.markFlags(res, context[REGISTER_VALUE_NAME_MAPPER[this.destination]] , context)
+		Instruction.markOverflow(old, 1, (int)res, context)
 
 		context.pc  += 2
 	}

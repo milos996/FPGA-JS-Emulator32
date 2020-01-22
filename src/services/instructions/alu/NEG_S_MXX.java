@@ -22,7 +22,7 @@ export default class NEG_S_MXX extends Instruction {
 		long res = -context.memory[fix(this.argument) / 2]
 		context.memory[fix(this.argument) / 2] = (short)res
 		
-		markFlags(res, (int)res, context)
+		Instruction.markFlags(res, (int)res, context)
 		context.pc  += 6
 		updateViewer(context, Instruction.fix(this.argument), (int)res)
 	}

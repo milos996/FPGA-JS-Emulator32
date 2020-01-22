@@ -1,6 +1,4 @@
-package emulator.source.cmpinv
 
-import emulator.engine.CpuContext
  import Instruction from '../Instruction'
 import { REGISTER_VALUE_NAME_MAPPER } from '@/constants/registers'
 
@@ -26,8 +24,8 @@ export default class CMP_B_REGX_MREGY extends Instruction {
 		
 		long res = context[REGISTER_VALUE_NAME_MAPPER[this.destination]]   - operand
 		
-		markFlags(res, (short)res, context)
-		markOverflow(old_a, context.memory[fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]] ) / 2], (int)res, context)
+		Instruction.markFlags(res, (short)res, context)
+		Instruction.markOverflow(old_a, context.memory[fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]] ) / 2], (int)res, context)
 		context.pc  += 2
 	}
 }

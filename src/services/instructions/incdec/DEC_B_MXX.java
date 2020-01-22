@@ -1,6 +1,4 @@
-package emulator.source.incdec
 
-import emulator.engine.CpuContext
  import Instruction from '../Instruction'
 import { REGISTER_VALUE_NAME_MAPPER } from '@/constants/registers'
 
@@ -36,8 +34,8 @@ export default class DEC_B_MXX extends Instruction {
 
 		context.memory[fixedAddr / 2] = content
 
-		markFlags(res, (short)res, context)
-		markOverflow(operand, -1, (int)res, context)
+		Instruction.markFlags(res, (short)res, context)
+		Instruction.markOverflow(operand, -1, (int)res, context)
 
 		context.pc  += 6
 		updateViewer(context, Instruction.fix(this.argument), content)

@@ -48,8 +48,8 @@ export default class ALU_B_REGX_MREGY extends Instruction {
 		}
 		
 		context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  = (int)res
-		markFlags(res, context[REGISTER_VALUE_NAME_MAPPER[this.destination]] , context)
-		markOverflow(old_a, operand, context[REGISTER_VALUE_NAME_MAPPER[this.destination]] , context)
+		Instruction.markFlags(res, context[REGISTER_VALUE_NAME_MAPPER[this.destination]] , context)
+		Instruction.markOverflow(old_a, operand, context[REGISTER_VALUE_NAME_MAPPER[this.destination]] , context)
 		context.pc  += 2
 	}
 }

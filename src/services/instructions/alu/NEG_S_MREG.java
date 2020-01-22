@@ -20,7 +20,7 @@ export default class NEG_S_MREG extends Instruction {
 	exec ({ context, memory }) {
 		long res = -context.memory[fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]] ) / 2]
 		context.memory[fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]] ) / 2] = (short)res
-		markFlags(res, (int)res, context)
+		Instruction.markFlags(res, (int)res, context)
 		context.pc  += 2
 		updateViewer(context, Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]] ), (int)res)
 	}

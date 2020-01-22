@@ -1,6 +1,4 @@
-package emulator.source.cmpinv
 
-import emulator.engine.CpuContext
  import Instruction from '../Instruction'
 import { REGISTER_VALUE_NAME_MAPPER } from '@/constants/registers'
 
@@ -18,7 +16,7 @@ export default class INV_S_MXX extends Instruction {
 	exec ({ context, memory }) {
 		long res = ~context.memory[fix(this.argument) / 2]
 		context.memory[fix(this.argument) / 2] = (short)res
-		markFlags(res, (int)res, context)
+		Instruction.markFlags(res, (int)res, context)
 		context.pc  += 6
 		updateViewer(context, Instruction.fix(this.argument), (int)res)
 	}

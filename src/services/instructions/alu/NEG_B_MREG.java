@@ -38,7 +38,7 @@ export default class NEG_B_MREG extends Instruction {
 
 		context.memory[fixedAddr / 2] = content
 
-		markFlags(res, (int)res, context)
+		Instruction.markFlags(res, (int)res, context)
 		context.pc  += 2
 		updateViewer(context, Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]] ), content)
 	}

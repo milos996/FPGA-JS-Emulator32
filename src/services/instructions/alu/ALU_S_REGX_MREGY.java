@@ -23,24 +23,24 @@ export default class ALU_S_REGX_MREGY extends Instruction {
 		int old_a = context[REGISTER_VALUE_NAME_MAPPER[this.destination]] 
 		long res = 0
 		switch (type) {
-		case ADD_S: res = context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  + getMemContent(context, Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]] ) / 2, Instruction.fix(this.argument)) break
-		case SUB_S: res = context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  - getMemContent(context, Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]] ) / 2, Instruction.fix(this.argument)) break
-		case AND_S: res = context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  & getMemContent(context, Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]] ) / 2, Instruction.fix(this.argument)) break
-		case OR_S : res = context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  | getMemContent(context, Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]] ) / 2, Instruction.fix(this.argument)) break
-		case XOR_S: res = context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  ^ getMemContent(context, Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]] ) / 2, Instruction.fix(this.argument)) break
-		case SHL_S: res = context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  << getMemContent(context, Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]] ) / 2, Instruction.fix(this.argument)) break
-		case SHR_S: res = context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  >>> getMemContent(context, Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]] ) / 2, Instruction.fix(this.argument)) break
-		case MUL_S:	res = context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  * getMemContent(context, Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]] ) / 2, Instruction.fix(this.argument)) 
+		case ADD_S: res = context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  + Instruction.getMemContent(context, Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]] ) / 2, Instruction.fix(this.argument)) break
+		case SUB_S: res = context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  - Instruction.getMemContent(context, Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]] ) / 2, Instruction.fix(this.argument)) break
+		case AND_S: res = context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  & Instruction.getMemContent(context, Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]] ) / 2, Instruction.fix(this.argument)) break
+		case OR_S : res = context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  | Instruction.getMemContent(context, Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]] ) / 2, Instruction.fix(this.argument)) break
+		case XOR_S: res = context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  ^ Instruction.getMemContent(context, Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]] ) / 2, Instruction.fix(this.argument)) break
+		case SHL_S: res = context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  << Instruction.getMemContent(context, Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]] ) / 2, Instruction.fix(this.argument)) break
+		case SHR_S: res = context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  >>> Instruction.getMemContent(context, Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]] ) / 2, Instruction.fix(this.argument)) break
+		case MUL_S:	res = context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  * Instruction.getMemContent(context, Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]] ) / 2, Instruction.fix(this.argument)) 
 					context.h  = (int)((res & 0xffff0000) >> 16)
 					break
-		case DIV_S: 	res = context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  / getMemContent(context, Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]] ) / 2, Instruction.fix(this.argument)) 
-					context.h  = (int)(context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  % getMemContent(context, Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]] ) / 2, Instruction.fix(this.argument)))
+		case DIV_S: 	res = context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  / Instruction.getMemContent(context, Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]] ) / 2, Instruction.fix(this.argument)) 
+					context.h  = (int)(context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  % Instruction.getMemContent(context, Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]] ) / 2, Instruction.fix(this.argument)))
 					break
 		default: throw new RuntimeException("Unsupported operation type: " + type)
 		}
 		context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  = (int)res
-		markFlags(res, context[REGISTER_VALUE_NAME_MAPPER[this.destination]] , context)
-		markOverflow(old_a, getMemContent(context, Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]] ) / 2, Instruction.fix(this.argument)), context[REGISTER_VALUE_NAME_MAPPER[this.destination]] , context)
+		Instruction.markFlags(res, context[REGISTER_VALUE_NAME_MAPPER[this.destination]] , context)
+		Instruction.markOverflow(old_a, Instruction.getMemContent(context, Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]] ) / 2, Instruction.fix(this.argument)), context[REGISTER_VALUE_NAME_MAPPER[this.destination]] , context)
 		context.pc  += 2
 	}
 }

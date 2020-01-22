@@ -1,6 +1,4 @@
-package emulator.source.incdec
 
-import emulator.engine.CpuContext
  import Instruction from '../Instruction'
 import { REGISTER_VALUE_NAME_MAPPER } from '@/constants/registers'
 
@@ -35,8 +33,8 @@ export default class INC_B_MREG extends Instruction {
 
 		context.memory[fixedAddr / 2] = content
 
-		markFlags(res, operand, context)
-		markOverflow(operand, 1, (int)res, context)
+		Instruction.markFlags(res, operand, context)
+		Instruction.markOverflow(operand, 1, (int)res, context)
 
 		context.pc  += 2
 		updateViewer(context, Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]] ), content)
