@@ -3,8 +3,8 @@ import Instruction from '../Instruction'
 const ASSEMBLER_INSTRUCTION_EXPRESSION = () => "halt"
 
 export default class Halt extends Instruction {
-	constructor (memory, address) {
-		super(memory, address, 0, 0)
+	constructor (memory, address, source, destination, symbolTable) {
+		super(memory, address, 0, 0, symbolTable)
 		this.assembler = ASSEMBLER_INSTRUCTION_EXPRESSION()
 		super.setContent()
 	}

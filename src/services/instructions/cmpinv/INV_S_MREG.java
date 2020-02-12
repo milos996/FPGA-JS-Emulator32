@@ -7,7 +7,7 @@ const ASSEMBLER_INSTRUCTION_EXPRESSION = (sdestination, ssource) => `ld.s ${sdes
 export default class INV_S_MREG extends Instruction {
 	public INV_S_MREG(memory, address, source, 
  destination) {
-		super(memory, address, source, destination)
+		super(memory, address, source, destination, symbolTable)
 		super.setAssembler("inv.s [" + this.sdest + "]")
 	}
 

@@ -5,7 +5,7 @@ import cpuEngine from '@/services/cpu/CpuEngine'
 
 class Instruction {
 
-  constructor (address, opcode, source, destination, symbolTable) {
+  constructor (memory, address, source, destination, symbolTable) {
     this.argumentLength = 2
     this.content = ''
     this.argument = null
@@ -23,7 +23,7 @@ class Instruction {
     this.hasArgument = false
 
     this.address = address
-    this.opcode = opcode
+    this.opcode = memory[address / 2]
     this.source = source
 		this.destination = destination
 		this.ssource = REGISTER_VALUE_NAME_MAPPER[source]
@@ -31,7 +31,7 @@ class Instruction {
 
     this.setContent()
 
-    const symbols = symbolTable[this.address]
+    const symbols = symbolTable.hasOwnProperty(address) ? symbolTable[this.address] : null
 
 		if (symbols !== null && symbols.size() > 0) {
 			this.symbolAddress = symbols.get(0)
@@ -54,8 +54,9 @@ class Instruction {
       return
     }
 
-		if (this.argumentLength === 2)
-    this.content = formatUtil('%04x, %04x', this.opcode, this.argument)
+		if (this.argumentLength === 2) {
+      this.content = formatUtil('%04x, %04x', this.opcode, this.argument)
+    }
   }
 
   exec ({ context, memory }) {
@@ -80,23 +81,31 @@ class Instruction {
 
 	setArgument (memory) {
     // TODO short
-		const w1 = memory[(this.addr + 2) / 2];
+    const w1 = memory[(this.address + 2) / 2];
+
 		this.argument = Instruction.fix(w1);
 		this.hasArgument = true;
 		this.argumentLength = 2;
 	}
 
   setAssembler(format, symbolTable) {
+    if (format !== 'nop' && this.argument !== null) {
+      this.assembler = formatUtil(format, this.argument.toString(16))
+      return;
+    }
+
+
 		if (!this.hasArgument) {
       this.assembler = format
       return
     }
 
-    const l = symbolTable[this.argument]
+    const l = symbolTable.hasOwnProperty(this.argument) ? symbolTable[this.argument] : null
 
-		// negativan broj kao argument
+    // negativan broj kao argument
 		if ((this.argument & 0x80000000) !== 0) {
-			if (l !== null && l.length > 0) {
+
+			if (!!l && l.length > 0) {
 				const idx = this.findLabel(l)
 
         if (idx === -1) {
@@ -119,7 +128,7 @@ class Instruction {
       return
     }
 
-		if (l !== null && l.length > 0) {
+		if (!!l && l.length > 0) {
 			let idx = this.findLabel(l)
 
       idx = idx === -1 ? 0 : idx
@@ -130,7 +139,11 @@ class Instruction {
 			format2 = format2.replace(/08x/g, 's')
 
       this.assembler = formatUtil(format2, l[idx])
-		}
+    }
+
+    if (format !== 'nop') {
+      console.log('this is it');
+    }
 
     this.assembler = formatUtil(format, this.argument)
   }

@@ -12,7 +12,7 @@ export default function HomePage() {
     <div>
       <h1>FPGA EMULTAOR</h1>
       <ControlComponent />
-      <InstructionsComponent />
+      {/* <InstructionsComponent /> */}
       <RegistersComponent />
       <FlagsComponent />
       <OutputComponent />

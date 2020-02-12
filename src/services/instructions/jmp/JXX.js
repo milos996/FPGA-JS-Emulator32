@@ -1,12 +1,12 @@
 import Instruction from '../Instruction'
 
-const ASSEMBLER_INSTRUCTION_EXPRESSION = () => 'j 0x%08x'
+const ASSEMBLER_INSTRUCTION_EXPRESSION = () => 'j %s'
 
 export default class JXX extends Instruction {
-	constructor (memory, address, source, destination) {
-		super(memory, address, 0, 0)
-		super.setArgument32()
-		super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION())
+	constructor (memory, address, source, destination, symbolTable) {
+		super(memory, address, 0, 0, symbolTable)
+		super.setArgument32(memory)
+		super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION(), symbolTable)
 		super.isJump = true
 	}
 

@@ -12,7 +12,7 @@ const ASSEMBLER_INSTRUCTION_EXPRESSION = (sdestination, ssource) => `ld.s ${sdes
 export default class NEG_B_MREG extends Instruction {
 	public NEG_B_MREG(memory, address, source, 
  destination) {
-		super(memory, address, source, destination)
+		super(memory, address, source, destination, symbolTable)
 		super.setAssembler("neg.b [" + this.sdest + "]")
 	}
 

@@ -7,7 +7,7 @@ const ASSEMBLER_INSTRUCTION_EXPRESSION = (sdestination, ssource) => `ld.s ${sdes
 export default class DEC_REG extends Instruction {
 	public DEC_REG(memory, address, source, 
  destination) {
-		super(memory, address, source, destination)
+		super(memory, address, source, destination, symbolTable)
 		super.setAssembler("dec " + this.sdest)
 	}
 	

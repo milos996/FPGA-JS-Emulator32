@@ -12,7 +12,7 @@ const ASSEMBLER_INSTRUCTION_EXPRESSION = (sdestination, ssource) => `ld.s ${sdes
 export default class NEG_B_MXX extends Instruction {
 	public NEG_B_MXX(memory, address, source, 
  destination) {
-		super(memory, address, source, destination)
+		super(memory, address, source, destination, symbolTable)
 		this.setArgument32()
 		super.setAssembler("neg.b [0x%08x]")
 	}

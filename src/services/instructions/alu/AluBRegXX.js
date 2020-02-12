@@ -6,9 +6,9 @@ import { INSTRUCTIONS_TYPE_FUNCTION_COMPUTATIONS } from '@/helpers/instruction'
 const ASSEMBLER_INSTRUCTION_EXPRESSION = (type, sdestination) => `${type} ${sdestination}, 0x%02x`
 
 export default class AluBRegXX extends Instruction {
-	constructor (memory, address, source, destination, type) {
-		super(memory, address, source, destination)
-		super.setArgument8()
+	constructor (memory, address, source, destination, type, symbolTable) {
+		super(memory, address, source, destination, symbolTable)
+		super.setArgument8(memory)
 		super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION(INSTRUCTIONS_TYPES_NAMES[type], this.sdestination))
 		this.type = type
 	}

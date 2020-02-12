@@ -4,9 +4,9 @@ import cpuEngine from '@/services/cpu/CpuEngine'
 const ASSEMBLER_INSTRUCTION_EXPRESSION = () => 'iret'
 
 export default class IRet extends Instruction {
-	constructor (memory, address, source, destination) {
-		super(memory, address, 0, 0)
-		super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION())
+	constructor (memory, address, source, destination, symbolTable) {
+		super(memory, address, 0, 0, symbolTable)
+		super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION(), symbolTable)
 	}
 
 	exec ({ context, memory }) {

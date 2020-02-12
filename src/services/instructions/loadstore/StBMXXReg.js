@@ -5,9 +5,9 @@ const ASSEMBLER_INSTRUCTION_EXPRESSION = sdestination =>
   `st.b [0x%08x], ${sdestination}`
 
 export default class StBMXXReg extends Instruction {
-  constructor(memory, address, source, destination) {
-    super(memory, address, source, destination)
-    super.setArgument32()
+  constructor(memory, address, source, destination, symbolTable) {
+    super(memory, address, source, destination, symbolTable)
+    super.setArgument32(memory)
     super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION(this.sdestination))
   }
 

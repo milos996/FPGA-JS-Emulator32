@@ -7,8 +7,8 @@ const ASSEMBLER_INSTRUCTION_EXPRESSION = (sdestination, ssource) => `ld.s ${sdes
 export default class LD_REG_MXX extends Instruction {
 	public LD_REG_MXX(memory, address, source, 
  destination) {
-		super(memory, address, source, destination)
-		super.setArgument32()
+		super(memory, address, source, destination, symbolTable)
+		super.setArgument32(memory)
 		super.setAssembler("ld " + this.sdest + ", [0x%08x]")
 	}
 

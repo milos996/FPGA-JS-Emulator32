@@ -13,7 +13,7 @@ export default class ALU_B_REGX_MREGY extends Instruction {
 	int type
 	
 	public ALU_B_REGX_MREGY(memory, address, source, destination, type) {
-		super(memory, address, source, destination)
+		super(memory, address, source, destination, symbolTable)
 		super.setAssembler(Instruction.getTypeStr(type) + this.sdest + ", [" + this.ssource + "]")
 		this.type = type
 	}

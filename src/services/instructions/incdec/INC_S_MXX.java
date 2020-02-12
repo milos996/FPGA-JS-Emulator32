@@ -7,7 +7,7 @@ const ASSEMBLER_INSTRUCTION_EXPRESSION = (sdestination, ssource) => `ld.s ${sdes
 export default class INC_S_MXX extends Instruction {
 	public INC_S_MXX(memory, address, source,
  destination) {
-		super(memory, address, source, destination)
+		super(memory, address, source, destination, symbolTable)
 		this.setArgument32()
 		super.setAssembler("inc.s [0x%08x]")
 	}

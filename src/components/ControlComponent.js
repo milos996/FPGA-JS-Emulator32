@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import fileParser from '@/services/parsers/FileParser';
+import { cpuParser } from '@/services/cpu/CpuParser'
 import cpuEngine from '@/services/cpu/CpuEngine';
 import ApplicationContext from '@/context/Context';
-import { SET_MEMORY, SET_CONTEXT } from '@/store/Actions';
+import { SET_MEMORY, SET_CONTEXT, SET_INSTRUCTIONS } from '@/store/Actions';
 
 export default function ControlComponent() {
   const [file, setFile] = useState(null);
   const { dispatch, state } = useContext(ApplicationContext);
+
 
   function handleUploadFile(input) {
     const fileInput = input.currentTarget;
@@ -24,12 +26,27 @@ export default function ControlComponent() {
 
   useEffect(() => {
     async function parseFile() {
-      const memory = await fileParser.parse(file);
-      dispatch({ type: SET_MEMORY, payload: memory });
+      if (file) {
+        const { data } = await fileParser.parse(file);
+        console.log({ data })
+
+        dispatch({ type: SET_MEMORY, payload: data });
+      }
     }
 
     parseFile();
   }, [file]);
+
+  useEffect(() => {
+    console.log(state.memory);
+
+    if (state.memory.length > 0) {
+      const instructionsSet = cpuParser.parse(state.memory, state.symbolTable);
+
+      dispatch({ type: SET_INSTRUCTIONS, payload: instructionsSet });
+    }
+
+  }, [state.memory])
 
   return (
     <div>

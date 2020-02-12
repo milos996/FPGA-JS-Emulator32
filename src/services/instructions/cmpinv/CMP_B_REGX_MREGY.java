@@ -7,7 +7,7 @@ const ASSEMBLER_INSTRUCTION_EXPRESSION = (sdestination, ssource) => `ld.s ${sdes
 export default class CMP_B_REGX_MREGY extends Instruction {
 	public CMP_B_REGX_MREGY(memory, address, source, 
  destination) {
-		super(memory, address, source, destination)
+		super(memory, address, source, destination, symbolTable)
 		super.setAssembler("cmp " + this.sdest + ", [" + this.ssource + "]")
 	}
 

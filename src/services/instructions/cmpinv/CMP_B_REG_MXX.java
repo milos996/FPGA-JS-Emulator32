@@ -7,8 +7,8 @@ const ASSEMBLER_INSTRUCTION_EXPRESSION = (sdestination, ssource) => `ld.s ${sdes
 export default class CMP_B_REG_MXX extends Instruction {
 	public CMP_B_REG_MXX(memory, address, source, 
  destination) {
-		super(memory, address, source, destination)
-		super.setArgument32()
+		super(memory, address, source, destination, symbolTable)
+		super.setArgument32(memory)
 		super.setAssembler("cmp" + this.sdest + ", [0x%08x]")
 	}
 	

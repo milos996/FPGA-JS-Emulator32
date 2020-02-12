@@ -4,9 +4,9 @@ import { REGISTER_VALUE_NAME_MAPPER } from '@/constants/registers'
 const ASSEMBLER_INSTRUCTION_EXPRESSION = (sdestination) => `cmp.s ${sdestination}, 0x%04x`
 
 export default class CmpSRegXX extends Instruction {
-	constructor (memory, address, source, destination) {
-		super(memory, address, source, destination)
-		super.setArgument()
+	constructor (memory, address, source, destination, symbolTable) {
+		super(memory, address, source, destination, symbolTable)
+		super.setArgument(memory)
 		super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION(this.sdestination))
 	}
 

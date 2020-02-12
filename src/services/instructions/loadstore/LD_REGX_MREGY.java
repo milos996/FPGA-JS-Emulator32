@@ -7,7 +7,7 @@ const ASSEMBLER_INSTRUCTION_EXPRESSION = (sdestination, ssource) => `ld.s ${sdes
 export default class LD_REGX_MREGY extends Instruction {
 	public LD_REGX_MREGY(memory, address, source, 
  destination) {
-		super(memory, address, source, destination)
+		super(memory, address, source, destination, symbolTable)
 		super.setAssembler("ld " + this.sdest + ", [" + this.ssource + "]")
 	}
 

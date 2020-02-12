@@ -4,8 +4,8 @@ import { REGISTER_VALUE_NAME_MAPPER } from '@/constants/registers'
 const ASSEMBLER_INSTRUCTION_EXPRESSION = (sdestination) => `inc.b [${sdestination}  + 0x%08x]`
 
 export default class IncBMRegXX extends Instruction {
-	constructor (memory, address, source, destination) {
-		super(memory, address, source, destination)
+	constructor (memory, address, source, destination, symbolTable) {
+		super(memory, address, source, destination, symbolTable)
 		this.setArgument32()
 		super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION(this.sdestination))
 	}

@@ -33,7 +33,7 @@ class CpuEngine {
 	      this.prepareIrq()
 	    }
 
-	    const instruction = this.addr_instruction[Instruction.fix(this.context.pc )]
+	    const instruction = this.addr_instruction[Instruction.fix(this.context.pc)]
 
 	    if (instruction.breakPoint) {
 	      this.stop()

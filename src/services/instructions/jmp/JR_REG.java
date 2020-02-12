@@ -9,7 +9,7 @@ const ASSEMBLER_INSTRUCTION_EXPRESSION = (sdestination, ssource) => `ld.s ${sdes
 export default class JR_REG extends Instruction {
 	public JR_REG(memory, address, source, 
  destination) {
-		super(memory, address, source, destination)
+		super(memory, address, source, destination, symbolTable)
 		super.setAssembler("jr " + this.ssource)
 		super.isJump = true
 	}

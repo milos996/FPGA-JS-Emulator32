@@ -6,8 +6,8 @@ import { INSTRUCTIONS_TYPE_FUNCTION_COMPUTATIONS } from '@/helpers/instruction'
 const ASSEMBLER_INSTRUCTION_EXPRESSION = (type, sdestination, ssource) => `${type} ${sdestination}, ${ssource}`
 
 export default class FloatRegXRegY extends Instruction {
-	constructor (memory, address, source, destination, type) {
-		super(memory, address, source, destination)
+	constructor (memory, address, source, destination, type, symbolTable) {
+		super(memory, address, source, destination, symbolTable)
 		super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION(
 			INSTRUCTIONS_TYPES_NAMES[type],
 			this.sdestination,

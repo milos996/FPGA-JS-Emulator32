@@ -2,13 +2,13 @@ import Instruction from '../Instruction'
 import { REGISTER_VALUE_NAME_MAPPER } from '@/constants/registers'
 
 const ASSEMBLER_INSTRUCTION_EXPRESSION = sdestination =>
-  `cmp.b ${sdestination}, 0x%02x`
+  `cmp.b ${sdestination}, %s`
 
 export default class CmpBRegXX extends Instruction {
-  constructor(memory, address, source, destination) {
-    super(memory, address, source, destination)
-    super.setArgument8()
-    super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION(this.sdestination))
+  constructor(memory, address, source, destination, symbolTable) {
+    super(memory, address, source, destination, symbolTable)
+    super.setArgument8(memory)
+    super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION(this.sdestination), symbolTable)
   }
 
   exec({ context }) {

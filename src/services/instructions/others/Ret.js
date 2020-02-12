@@ -3,9 +3,9 @@ import Instruction from '../Instruction'
 const ASSEMBLER_INSTRUCTION_EXPRESSION = () => 'ret'
 
 export default class Ret extends Instruction {
-	constructor (memory, address, source, destination) {
-		super(memory, address, 0, 0)
-		super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION())
+	constructor (memory, address, source, destination, symbolTable) {
+		super(memory, address, 0, 0, symbolTable)
+		super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION(), symbolTable)
 	}
 
 	exec ({ context, memory }) {

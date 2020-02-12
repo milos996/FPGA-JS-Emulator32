@@ -13,8 +13,8 @@ export default class ALU_S_REG_MXX extends Instruction {
 	int type
 
 	public ALU_S_REG_MXX(memory, address, source, destination, type) {
-		super(memory, address, source, destination)
-		super.setArgument()
+		super(memory, address, source, destination, symbolTable)
+		super.setArgument(memory)
 		super.setAssembler(Instruction.getTypeStr(type) + this.sdest + ", [0x%08x]")
 		this.type = type
 	}
