@@ -40,10 +40,15 @@ class CpuEngine {
 		// 	break
 		// }
 
+
 		try {
-			if (instruction.constructor.name !== 'Nop') {
-				console.log(`INSTRUCTION -> ${instruction.assembler}  ----  ${instruction.constructor.name}`);
-			}
+			// if (instruction.constructor.name !== 'Nop') {
+			// 	console.log(`INSTRUCTION -> ${instruction.assembler}  ----  ${instruction.constructor.name}`);
+
+			// 	if (`INSTRUCTION -> ${instruction.assembler}  ----  ${instruction.constructor.name}` === 'INSTRUCTION -> jp(jge) 0x%08x b29e  ----  JP_XX') {
+			// 		const a=0
+			// 	}
+			// }
 
 			instructionResponse = instruction.exec({
 				context: this.context,
@@ -61,7 +66,9 @@ class CpuEngine {
 			shouldRunAgain: this.running,
 			context: this.context,
 			memory: this.memory,
-			instructionResponse
+			instructionResponse: {
+				...instructionResponse,
+			}
 		}
   }
 
@@ -173,7 +180,7 @@ class CpuEngine {
 			r11: 0,
 			r12: 0,
 			r13: 0,
-			pc: 45000,
+			pc: 45056,
 			sp: 0,
 			h: 0,
 			f: 0

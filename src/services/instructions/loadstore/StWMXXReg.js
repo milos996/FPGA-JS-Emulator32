@@ -19,5 +19,10 @@ export default class StWMXXReg extends Instruction {
 		)
 
 		context.pc  += 6
+
+		return {
+			address: Instruction.fix(this.argument),
+			content: context[REGISTER_VALUE_NAME_MAPPER[this.destination]]
+		}
 	}
 }

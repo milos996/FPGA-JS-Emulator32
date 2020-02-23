@@ -2,7 +2,7 @@
  import Instruction from '../Instruction'
 import { REGISTER_VALUE_NAME_MAPPER } from '@/constants/registers'
 
-const ASSEMBLER_INSTRUCTION_EXPRESSION = (sdestination) => `inc.w [ ${sdestination} + 0x%08x]`
+const ASSEMBLER_INSTRUCTION_EXPRESSION = (sdestination) => `inc.w [ ${sdestination} + %s]`
 
 export default class IncWMRegXX extends Instruction {
 	constructor (memory, address, source, destination, symbolTable) {
@@ -32,5 +32,11 @@ export default class IncWMRegXX extends Instruction {
 		Instruction.markOverflow(old, 1, result, context)
 
 		context.pc  += 6
+
+		// TODO - updateViewer32
+		return {
+			address: Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  + this.argument),
+			content: result
+		}
 	}
 }

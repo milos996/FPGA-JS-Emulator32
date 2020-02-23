@@ -20,13 +20,31 @@ export default function ControlComponent() {
 
   async function handleStart() {
     cpuEngine.inject(state.memory, state.lines, state.addressInstruction)
-    console.log({
-      addressInstruction: state.addressInstruction
-    })
-    
-    let running = true
 
-		while (running) {
+    // let running = true
+
+    runnn()
+		// while (running) {
+    //   setTimeout( async () => {
+    //     const {
+    //       shouldRunAgain,
+    //       instructionResponse,
+    //       context,
+    //       memory
+    //     } = cpuEngine.run()
+
+    //     await dispatch({ type: SET_MEMORY, payload: memory})
+    //     await dispatch({type: SET_CONTEXT, payload: context})
+
+    //     instructionResponse.content || instructionResponse.content === 0 && await dispatch({ type: UPDATE_OUTPUT, payload: instructionResponse })
+
+    //     running = shouldRunAgain
+    //   },1000);
+		// }
+  }
+
+  async function runnn() {
+    setTimeout( async () => {
       const {
         shouldRunAgain,
         instructionResponse,
@@ -37,10 +55,10 @@ export default function ControlComponent() {
       await dispatch({ type: SET_MEMORY, payload: memory})
       await dispatch({type: SET_CONTEXT, payload: context})
 
-      instructionResponse && await dispatch({ type: UPDATE_OUTPUT, payload: instructionResponse })
+      instructionResponse.content || instructionResponse.content === 0 && await dispatch({ type: UPDATE_OUTPUT, payload: instructionResponse })
 
-      running = shouldRunAgain
-		}
+      shouldRunAgain && runnn()
+    });
   }
 
   useEffect(() => {
@@ -74,6 +92,7 @@ export default function ControlComponent() {
       <input
         type='file'
         id='avatar'
+        accept=".bin"
         name='avatar'
         onChange={handleUploadFile}
         multiple={false}

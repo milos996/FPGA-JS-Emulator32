@@ -35,5 +35,10 @@ export default class DecBMRegXX extends Instruction {
 		Instruction.markOverflow(operand, -1, result, context)
 
 		context.pc  += 6
+
+		return {
+			address: fixedAddress,
+			content
+		}
 	}
 }

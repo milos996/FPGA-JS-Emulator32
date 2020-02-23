@@ -19,5 +19,10 @@ export default class StWMRegXRegY extends Instruction {
 		)
 
 		context.pc += 2
+
+		return {
+			address: Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]]),
+			content: context[REGISTER_VALUE_NAME_MAPPER[this.source]]
+		}
 	}
 }

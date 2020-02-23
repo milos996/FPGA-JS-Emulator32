@@ -1,7 +1,7 @@
 import Instruction from '../Instruction'
 import { REGISTER_VALUE_NAME_MAPPER } from '@/constants/registers'
 
-const ASSEMBLER_INSTRUCTION_EXPRESSION = (sdestination, ssource) => `st.w [${sdestination} + 0x%08x], ${ssource}`
+const ASSEMBLER_INSTRUCTION_EXPRESSION = (sdestination, ssource) => `st.w [${sdestination} + %s], ${ssource}`
 
 export default class StWMRegXXXRegY extends Instruction {
 	constructor (memory, address, source, destination, symbolTable) {
@@ -19,5 +19,10 @@ export default class StWMRegXXXRegY extends Instruction {
 		)
 
 		context.pc  += 6
+
+		return {
+			address: Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]]   +  this.argument),
+			content: context[REGISTER_VALUE_NAME_MAPPER[this.source]]
+		}
 	}
 }

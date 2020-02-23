@@ -18,5 +18,10 @@ export default class DecSMReg extends Instruction {
 		Instruction.markOverflow(old, -1, result, context)
 
 		context.pc  += 2
+
+		return {
+			address: Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]]),
+			content: result
+		}
 	}
 }

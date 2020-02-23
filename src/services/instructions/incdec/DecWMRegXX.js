@@ -31,5 +31,11 @@ export default class DecWMRegXX extends Instruction {
 		Instruction.markOverflow(old, -1, result, context)
 
 		context.pc += 6
+
+		// TODO - updateViewer32
+		return {
+			address: Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  + this.argument),
+			content: result
+		}
 	}
 }

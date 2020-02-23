@@ -11,7 +11,12 @@ export default class PushReg extends Instruction {
 
 	exec ({ context, memory }) {
 		context.sp  -= 4
-		Instruction.push(memory, Instruction.fix(context.sp), REGISTER_VALUE_NAME_MAPPER[this.destination])
+		Instruction.push(memory, Instruction.fix(context.sp) / 2, context[REGISTER_VALUE_NAME_MAPPER[this.destination]])
 		context.pc += 2
+
+		return {
+			address: Instruction.fix(context.sp),
+			content: context[REGISTER_VALUE_NAME_MAPPER[this.destination]]
+		}
 	}
 }

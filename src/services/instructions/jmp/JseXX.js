@@ -1,6 +1,6 @@
 import Instruction from '../Instruction'
 
-const ASSEMBLER_INSTRUCTION_EXPRESSION = () => 'jse 0x%08x'
+const ASSEMBLER_INSTRUCTION_EXPRESSION = () => 'jse %s'
 
 export default class JseXX extends Instruction {
 	constructor (memory, address, source, destination, symbolTable) {

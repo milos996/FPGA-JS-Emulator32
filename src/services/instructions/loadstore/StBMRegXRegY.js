@@ -14,8 +14,8 @@ export default class StBMRegXRegY extends Instruction {
 		const fixedAddress = Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]] )
 
 		// TODO: `short` type -->> short content = context.memory[Math.floor(fixedAddress / 2)]
-		const content = memory[Math.floor(fixedAddress / 2)]
-		if (fixedAddress & 1 == 0) {
+		let content = memory[Math.floor(fixedAddress / 2)]
+		if ((fixedAddress & 1) === 0) {
 			content &= 0x00ff
 			content |= context[REGISTER_VALUE_NAME_MAPPER[this.source]]  << 8
 		} else {
@@ -26,5 +26,10 @@ export default class StBMRegXRegY extends Instruction {
 		memory[Math.floor(fixedAddress / 2)] = content
 
 		context.pc  += 2
+
+		return {
+			address: fixedAddress,
+			content
+		}
 	}
 }

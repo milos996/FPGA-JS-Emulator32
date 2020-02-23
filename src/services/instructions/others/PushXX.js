@@ -2,7 +2,7 @@
  import Instruction from '../Instruction'
  import { REGISTER_VALUE_NAME_MAPPER } from '@/constants/registers'
 
- const ASSEMBLER_INSTRUCTION_EXPRESSION = () => 'push 0x%08x'
+ const ASSEMBLER_INSTRUCTION_EXPRESSION = () => 'push %s'
 
 export default class PushXX extends Instruction {
 	constructor (memory, address, source, destination, symbolTable) {
@@ -16,5 +16,11 @@ export default class PushXX extends Instruction {
 		const v = Instruction.fix(context.sp)
 		Instruction.push(memory, v/2, this.argument)
 		context.pc += 6
+
+		// TODO - updateViewer32
+		return {
+			address: v,
+			content: this.argument
+		}
 	}
 }

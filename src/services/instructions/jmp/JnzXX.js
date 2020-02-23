@@ -1,6 +1,6 @@
 import Instruction from '../Instruction'
 
-const ASSEMBLER_INSTRUCTION_EXPRESSION = () => 'jnz 0x%08x'
+const ASSEMBLER_INSTRUCTION_EXPRESSION = () => 'jnz %s'
 
 export default class JnzXX extends Instruction {
 	constructor (memory, address, source, destination, symbolTable) {

@@ -26,5 +26,10 @@ export default class StBMRegXXXRegY extends Instruction {
 		memory[Math.floor(fixedAddress / 2)] = content
 
 		context.pc  += 6
+
+		return {
+			address: Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  + this.argument),
+			content
+		}
 	}
 }

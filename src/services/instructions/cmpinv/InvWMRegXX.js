@@ -28,5 +28,11 @@ export default class InvWMRegXX extends Instruction {
 
 		Instruction.markFlags(result, result, context)
 		context.pc  += 6
+
+		// TODO - updateViewer32
+		return {
+			address: Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  + this.argument),
+			content: result
+		}
 	}
 }

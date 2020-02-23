@@ -42,5 +42,10 @@ export default class NEG_B_MREG_XX extends Instruction {
 
 		Instruction.markFlags(result, result, context)
 		context.pc  += 6
+
+		return {
+			address: fixedAddress,
+			content
+		}
 	}
 }

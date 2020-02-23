@@ -1,6 +1,6 @@
 import Instruction from '../Instruction'
 
-const ASSEMBLER_INSTRUCTION_EXPRESSION = () => 'jno 0x%08x'
+const ASSEMBLER_INSTRUCTION_EXPRESSION = () => 'jno %s'
 
 export default class JnoXX extends Instruction {
 	constructor (memory, address, source, destination, symbolTable) {

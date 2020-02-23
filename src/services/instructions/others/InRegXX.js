@@ -5,11 +5,11 @@
 
 export default class InRegXX extends Instruction {
 
-	constructor (memory, address, source,  destination) {
-		super(address, memory[Math.floor((this.addr + 2)  / 2)], source, destination)
+	constructor (memory, address, source,  destination, symbolTable) {
+		super(address, memory[Math.floor(address  / 2)], source, destination, symbolTable)
 		super.setArgument(memory)
+		super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION(this.sdestination), symbolTable)
 		this.argument = memory[Math.floor((this.address + 2) / 2)]
-		super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION(this.sdestination))
 	}
 
 	exec ({ context }) {

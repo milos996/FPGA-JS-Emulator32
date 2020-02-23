@@ -32,5 +32,10 @@ export default class InvBMRegXX extends Instruction {
 
 		Instruction.markFlags(result, result, context)
 		context.pc  += 6
+
+		return {
+			address:fixedAddress,
+			content
+		}
 	}
 }

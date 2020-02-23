@@ -1,6 +1,6 @@
 import Instruction from '../Instruction'
 
-const ASSEMBLER_INSTRUCTION_EXPRESSION = () => 'call 0x%08x'
+const ASSEMBLER_INSTRUCTION_EXPRESSION = () => 'call %s'
 
 export default class CallXX extends Instruction {
 	constructor (memory, address, source, destination, symbolTable) {
@@ -13,12 +13,19 @@ export default class CallXX extends Instruction {
 	exec ({ context, memory }) {
 		context.sp  -= 4
 
+		const addedPCValue = context.pc + 6
 		Instruction.push(
 			memory,
 			Instruction.fix(context.sp) / 2,
-			context.pc + 6
+			addedPCValue
 		)
 
 		context.pc  = this.argument
+
+		// TODO: updateViewer32 nije isto kao i updateViewer, treba skontati kako slati nazad
+		return {
+			address: Instruction.fix(context.sp),
+			content: addedPCValue
+		}
 	}
 }

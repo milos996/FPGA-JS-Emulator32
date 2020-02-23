@@ -1,6 +1,6 @@
 import Instruction from '../Instruction'
 
-const ASSEMBLER_INSTRUCTION_EXPRESSION = () => 'jnp(js) 0x%08x'
+const ASSEMBLER_INSTRUCTION_EXPRESSION = () => 'jnp(js) %s'
 
 export default class JnpXX extends Instruction {
 	constructor (memory, address, source, destination, symbolTable) {
@@ -13,6 +13,7 @@ export default class JnpXX extends Instruction {
 	exec ({ context }) {
 		if ((context.f  & 0x8) == 0) {
 			context.pc  = this.argument
+			return
 		}
 
 		context.pc += 6

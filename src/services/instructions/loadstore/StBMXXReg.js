@@ -28,5 +28,10 @@ export default class StBMXXReg extends Instruction {
     memory[Math.floor(fixedAddress / 2)] = content
 
     context.pc += 6
+
+    return {
+      address: Instruction.fix(this.argument),
+      content
+    }
   }
 }
