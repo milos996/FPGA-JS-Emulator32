@@ -1,13 +1,13 @@
 import Instruction from '../Instruction'
 import { REGISTER_VALUE_NAME_MAPPER } from '@/constants/registers'
 
-const ASSEMBLER_INSTRUCTION_EXPRESSION = (ssource) => `st.s [0x%08x], ${ssource}`
+const ASSEMBLER_INSTRUCTION_EXPRESSION = (ssource) => `st.s [%s], ${ssource}`
 
 export default class StSMXXReg extends Instruction {
 	constructor (memory, address, source, destination, symbolTable) {
 		super(memory, address, source, destination, symbolTable)
 		super.setArgument32(memory)
-		super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION(this.ssource))
+		super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION(this.ssource), symbolTable)
 	}
 
 	exec ({ context, memory }) {

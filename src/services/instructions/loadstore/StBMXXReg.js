@@ -14,8 +14,8 @@ export default class StBMXXReg extends Instruction {
   exec({ context, memory }) {
     const fixedAddress = Instruction.fix(this.argument)
 
-    //TODO: short type -->> short content = context.memory[fixedAddress / 2]
-    const content = memory[fixedAddress / 2]
+    //TODO: short type -->> short content = context.memory[Math.floor(fixedAddress / 2)]
+    const content = memory[Math.floor(fixedAddress / 2)]
 
     if (fixedAddress & (1 == 0)) {
       content &= 0x00ff
@@ -25,7 +25,7 @@ export default class StBMXXReg extends Instruction {
       content |= context[REGISTER_VALUE_NAME_MAPPER[this.destination]] & 255
     }
 
-    memory[fixedAddress / 2] = content
+    memory[Math.floor(fixedAddress / 2)] = content
 
     context.pc += 6
   }

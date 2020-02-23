@@ -22,13 +22,13 @@ export default class NEG_B_MREG_XX extends Instruction {
 		 */
 
 		const operand = fixedAddress & 1 == 0 ?
-			(memory[fixedAddress / 2] >> 8) & 0xFF :
-			(memory[fixedAddress / 2] & 255) & 0xFF
+			(memory[Math.floor(fixedAddress / 2)] >> 8) & 0xFF :
+			(memory[Math.floor(fixedAddress / 2)] & 255) & 0xFF
 
 		let result = -operand
 
 		//TODO: short type -->> short content = (short) context.memory[fixedAddress / 2]
-		let content = memory[fixedAddress / 2]
+		let content = memory[Math.floor(fixedAddress / 2)]
 
 		if ((fixedAddress & 1) == 0) {
 			content &= 0x00ff
@@ -38,7 +38,7 @@ export default class NEG_B_MREG_XX extends Instruction {
 			content |= result & 255
 		}
 
-		memory[fixedAddress / 2] = content
+		memory[Math.floor(fixedAddress / 2)] = content
 
 		Instruction.markFlags(result, result, context)
 		context.pc  += 6

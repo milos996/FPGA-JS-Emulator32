@@ -12,12 +12,13 @@ export default class LdBRegXMRegY extends Instruction {
 
 	exec ({ context, memory }) {
 		const fixedAddress = Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]])
-		if (fixedAddress & 1 == 0) {
+		if ((fixedAddress & 1) == 0) {
+			// TODO - PROBLEM : Moguc problem prilikom izvrsavanja, provjeriti
 			// TODO: ->> (short)(context.memory[fixedAddr / 2] >> 8) & 0xFF
-			context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  = (memory[fixedAddress / 2] >> 8) & 0xFF
+			context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  = (memory[Math.floor(fixedAddress / 2)] >> 8) & 0xFF
 		} else {
 			// TODO: ->> (short)(context.memory[fixedAddr / 2] & 255) & 0xFF
-			context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  = (memory[fixedAddress / 2] & 255) & 0xFF
+			context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  = (memory[Math.floor(fixedAddress / 2)] & 255) & 0xFF
 		}
 
 		context.pc  += 2

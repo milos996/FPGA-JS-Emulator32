@@ -13,13 +13,13 @@ export default class DecBMRegXX extends Instruction {
 	exec ({ context, memory }) {
 		const fixedAddress = Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  + this.argument)
 		const operand = (fixedAddress & 1 == 0) ?
-			(memory[fixedAddress / 2] >> 8) & 0xFF :
-			(memory[fixedAddress / 2] & 255) & 0xFF
+			(memory[Math.floor(fixedAddress / 2)] >> 8) & 0xFF :
+			(memory[Math.floor(fixedAddress / 2)] & 255) & 0xFF
 
 
 		let result = operand - 1
 
-		let content = memory[fixedAddress / 2]
+		let content = memory[Math.floor(fixedAddress / 2)]
 
 		if ((fixedAddress & 1) == 0) {
 			content &= 0x00ff
@@ -29,7 +29,7 @@ export default class DecBMRegXX extends Instruction {
 			content |= result & 255
 		}
 
-		memory[fixedAddress / 2] = content
+		memory[Math.floor(fixedAddress / 2)] = content
 
 		Instruction.markFlags(result, result, context)
 		Instruction.markOverflow(operand, -1, result, context)

@@ -27,7 +27,7 @@ export default class AluSRegXMRegYXX extends Instruction {
 
 		result = INSTRUCTIONS_TYPE_FUNCTION_COMPUTATIONS[this.type](
 			context[REGISTER_VALUE_NAME_MAPPER[this.destination]],
-			memory[Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]]  + this.argument) / 2]
+			memory[Math.floor(Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]]  + this.argument) / 2)]
 		)
 
 		switch (this.type) {
@@ -38,7 +38,7 @@ export default class AluSRegXMRegYXX extends Instruction {
 			case INSTRUCTION_TYPES.DIV_S:
 				context.h  =
 				  context[REGISTER_VALUE_NAME_MAPPER[this.destination]] %
-				  memory[Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]]  + this.argument) / 2]
+				  memory[Math.floor(Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]]  + this.argument) / 2)]
 				break
 		}
 
@@ -47,7 +47,7 @@ export default class AluSRegXMRegYXX extends Instruction {
 		Instruction.markFlags(result, context[REGISTER_VALUE_NAME_MAPPER[this.destination]] , context)
 		Instruction.markOverflow(
 			old_a,
-			memory[Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]]  + this.argument) / 2],
+			memory[Math.floor(Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]]  + this.argument) / 2)],
 			context[REGISTER_VALUE_NAME_MAPPER[this.destination]] , context
 		)
 

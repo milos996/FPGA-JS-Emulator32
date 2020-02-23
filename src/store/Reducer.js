@@ -1,5 +1,6 @@
 import * as ActionHandlers from './ActionHandlers';
 import * as Actions from './Actions';
+import { OUTPUT_MODES } from '@/constants/general'
 
 export const initialState = {
   memory: [],
@@ -25,7 +26,9 @@ export const initialState = {
 		sp: 0,
 		h: 0,
 		f: 0
-  }
+	},
+	outputPayload: null,
+	outputMode: OUTPUT_MODES.TEXT
 };
 
 export const reducer = function(state, action) {
@@ -40,5 +43,6 @@ export const reducer = function(state, action) {
 const ACTION_HANDLER = {
   [Actions.SET_MEMORY]: ActionHandlers.SET_MEMORY_HANDLER,
   [Actions.SET_INSTRUCTIONS]: ActionHandlers.SET_INSTRUCTIONS_HANDLER,
-  [Actions.SET_CONTEXT]: ActionHandlers.SET_CONTEXT_HANDLER
+	[Actions.SET_CONTEXT]: ActionHandlers.SET_CONTEXT_HANDLER,
+	[Actions.UPDATE_OUTPUT]: ActionHandlers.SET_OUTPUT_PAYLOAD
 };

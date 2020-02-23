@@ -15,10 +15,10 @@ export default class LdBRegMXX extends Instruction {
 		const fixedAddr = Instruction.fix(this.argument)
 		if ((fixedAddr & 1) == 0) {
 			// TODO -->> (short)(context.memory[fixedAddr / 2] >> 8) & 0xFF
-			context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  = (memory[fixedAddr / 2] >> 8) & 0xFF
+			context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  = (memory[Math.floor(fixedAddr / 2)] >> 8) & 0xFF
 		} else {
 			// TODO -->> (short)(context.memory[fixedAddr / 2] & 255) & 0xFF
-			context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  = (memory[fixedAddr / 2] & 255) & 0xFF
+			context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  = (memory[Math.floor(fixedAddr / 2)] & 255) & 0xFF
 		}
 
 		context.pc  += 6

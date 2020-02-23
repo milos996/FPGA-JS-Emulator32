@@ -37,8 +37,8 @@ export default class AluBRegXMRegYXX extends Instruction {
 		 * 			(short)((context.memory[fixedAddr / 2] & 255) & 0xFF)
 		 */
 		const operand = (fixedAddress & 1 == 0) ?
-			(memory[fixedAddress / 2] >> 8) & 0xFF :
-			(memory[fixedAddress / 2] & 255) & 0xFF
+			(memory[Math.floor(fixedAddress / 2)] >> 8) & 0xFF :
+			(memory[Math.floor(fixedAddress / 2)] & 255) & 0xFF
 
 
 		/**

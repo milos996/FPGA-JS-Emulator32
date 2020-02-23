@@ -27,6 +27,11 @@ class CpuParser {
       }
 
       if (instruction.assembler !== 'nop') {
+
+        if (`INSTRUCTION -> ${instruction.assembler}  ----  ${instruction.constructor.name}` === 'INSTRUCTION -> shr.w  r8, 6c6c6f20  ----  AluWRegXX') {
+            console.log({address});
+        }
+
         console.log(`INSTRUCTION -> ${instruction.assembler}  ----  ${instruction.constructor.name}`);
       }
 

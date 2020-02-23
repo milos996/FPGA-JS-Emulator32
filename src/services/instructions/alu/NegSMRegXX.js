@@ -15,10 +15,10 @@ export default class NegSMRegXX extends Instruction {
 
 	exec ({ context, memory }) {
 		// TODO: long type -->> long result =...
-		const result = -memory[Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  + this.argument) / 2]
+		const result = -memory[Math.floor(Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  + this.argument) / 2)]
 
 		// TODO: cast to short -->> ... = (short)result
-		memory[Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  + this.argument) / 2] = result
+		memory[Math.floor(Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  + this.argument) / 2)] = result
 
 		Instruction.markFlags(result, result, context)
 		context.pc  += 6

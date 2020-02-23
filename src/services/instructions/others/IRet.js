@@ -12,7 +12,7 @@ export default class IRet extends Instruction {
 	exec ({ context, memory }) {
 		context.pc  = Instruction.pop(memory, Instruction.fix(context.sp) / 2)
 		context.sp  += 4
-		context.f  = memory[Instruction.fix(context.sp) / 2]
+		context.f  = memory[Math.floor(Instruction.fix(context.sp) / 2)]
 		context.sp  += 2
 		cpuEngine.irq0 = false
 		cpuEngine.irq2_pressed = false

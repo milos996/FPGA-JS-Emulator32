@@ -115,7 +115,8 @@ export const INSTRUCTIONS = {
     7: {class: () => import('@/services/instructions/jmp/JpXX')},
     8: {class: () => import('@/services/instructions/jmp/JnpXX')},
     9: {class: () => import('@/services/instructions/jmp/JgXX')},
-    10: {class: () => import('@/services/instructions/jmp/JseXX')}
+    10: {class: () => import('@/services/instructions/jmp/JseXX')},
+    15: {class : () => import('@/services/instructions/jmp/JrReg')}
   },
 
   [CALL_GROUP]: {
@@ -166,6 +167,7 @@ export const INSTRUCTIONS = {
     2: {class: () => import('@/services/instructions/alu/AluWRegXMRegYXX'), type: INSTRUCTION_TYPES.AND_W},
     3: {class: () => import('@/services/instructions/alu/AluSRegXMRegYXX'), type: INSTRUCTION_TYPES.AND_S},
     4: {class: () => import('@/services/instructions/alu/AluBRegXMRegYXX'), type: INSTRUCTION_TYPES.AND_B},
+    6: { class: () => import('@/services/instructions/alu/AluWRegXX'), type: INSTRUCTION_TYPES.SHR_W},
     8: {class: () => import('@/services/instructions/alu/AluWRegXRegY'), type: INSTRUCTION_TYPES.OR_W},
     9: {class: () => import('@/services/instructions/alu/AluSRegXX'), type: INSTRUCTION_TYPES.OR_S},
     10: {class: () => import('@/services/instructions/alu/AluWRegXMRegYXX'), type: INSTRUCTION_TYPES.OR_W},
@@ -248,6 +250,7 @@ export const INSTRUCTIONS = {
     1: { class: () => import('@/services/instructions/loadstore/LdWRegMXX') },
     2: { class: () => import('@/services/instructions/loadstore/LdWRegXMRegYXX') },
     4: { class: () => import('@/services/instructions/alu/AluWRegXX'), type: INSTRUCTION_TYPES.XOR_W},
+    6: { class: () => import('@/services/instructions/alu/AluWRegXX'), type: INSTRUCTION_TYPES.SHR_W},
     8: { class: () => import('@/services/instructions/loadstore/StWMRegXRegY') },
     9: { class: () => import('@/services/instructions/loadstore/StWMXXReg') },
     10: { class: () => import('@/services/instructions/loadstore/StWMRegXXXRegY') }
@@ -255,8 +258,8 @@ export const INSTRUCTIONS = {
 
   [ALU_CMP_W_GROUP]: {
     0: { class: () => import('@/services/instructions/alu/AluWRegXX'), type: INSTRUCTION_TYPES.ADD_W},
-    2: { class: () => import('@/services/instructions/alu/AluWRegXX'), type: INSTRUCTION_TYPES.SUB_W},
-    1: { class: () => import('@/services/instructions/alu/AluWRegXX'), type: INSTRUCTION_TYPES.AND_W},
+    1: { class: () => import('@/services/instructions/alu/AluWRegXX'), type: INSTRUCTION_TYPES.SUB_W},
+    2: { class: () => import('@/services/instructions/alu/AluWRegXX'), type: INSTRUCTION_TYPES.AND_W},
     3: { class: () => import('@/services/instructions/alu/AluWRegXX'), type: INSTRUCTION_TYPES.OR_W},
     4: { class: () => import('@/services/instructions/alu/AluWRegXX'), type: INSTRUCTION_TYPES.XOR_W},
     5: { class: () => import('@/services/instructions/alu/AluWRegXX'), type: INSTRUCTION_TYPES.SHL_W},

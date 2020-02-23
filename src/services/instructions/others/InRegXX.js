@@ -6,9 +6,9 @@
 export default class InRegXX extends Instruction {
 
 	constructor (memory, address, source,  destination) {
-		super(address, memory[(this.addr + 2)  / 2], source, destination)
+		super(address, memory[Math.floor((this.addr + 2)  / 2)], source, destination)
 		super.setArgument(memory)
-		this.argument = memory[(this.address + 2) / 2]
+		this.argument = memory[Math.floor((this.address + 2) / 2)]
 		super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION(this.sdestination))
 	}
 

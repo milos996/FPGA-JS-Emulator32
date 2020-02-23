@@ -3,13 +3,13 @@ import { REGISTER_VALUE_NAME_MAPPER } from '@/constants/registers'
 import { INSTRUCTIONS_TYPES_NAMES, INSTRUCTION_TYPES } from '@/constants/instructions'
 import { INSTRUCTIONS_TYPE_FUNCTION_COMPUTATIONS } from '@/helpers/instruction'
 
-const ASSEMBLER_INSTRUCTION_EXPRESSION = (type, sdestination) => `${type} ${sdestination}, 0x%04x`
+const ASSEMBLER_INSTRUCTION_EXPRESSION = (type, sdestination) => `${type} ${sdestination}, %s`
 
 export default class AluSRegXX extends Instruction {
 	constructor (memory, address, source, destination, type, symbolTable) {
 		super(memory, address, source, destination, symbolTable)
 		super.setArgument(memory)
-		super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION(INSTRUCTIONS_TYPES_NAMES[type], this.sdestination))
+		super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION(INSTRUCTIONS_TYPES_NAMES[type], this.sdestination), symbolTable)
 		this.type = type
 	}
 

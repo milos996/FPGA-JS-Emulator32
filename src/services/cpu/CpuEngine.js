@@ -22,42 +22,46 @@ class CpuEngine {
 	}
 
   run() {
-		this.running = true
+		let instructionResponse;
 
-		while (this.running) {
-	    if (
-	      this.irq0 ||
-	      this.irq2_pressed ||
-	      this.irq2_released
-	    ) {
-	      this.prepareIrq()
-	    }
-
-	    const instruction = this.addr_instruction[Instruction.fix(this.context.pc)]
-
-	    if (instruction.breakPoint) {
-	      this.stop()
-	      break
-			}
-
-	    try {
-				instruction.exec({
-					context: this.context,
-					memory: this.memory
-				})
-	    } catch (error) {
-				this.running = false
-				console.log(error)
-				throw error
-	    }
-
-			if (this.debug) {
-			}
+		if (
+			this.irq0 ||
+			this.irq2_pressed ||
+			this.irq2_released
+		) {
+			this.prepareIrq()
 		}
 
+		const instruction = this.addressInstruction[Instruction.fix(this.context.pc)]
+
+
+		// if (instruction.breakPoint) {
+		// 	this.stop()
+		// 	break
+		// }
+
+		try {
+			if (instruction.constructor.name !== 'Nop') {
+				console.log(`INSTRUCTION -> ${instruction.assembler}  ----  ${instruction.constructor.name}`);
+			}
+
+			instructionResponse = instruction.exec({
+				context: this.context,
+				memory: this.memory
+			})
+		} catch (error) {
+			this.running = false
+			console.log(error)
+		}
+
+		// if (this.debug) {
+		// }
+
 		return {
+			shouldRunAgain: this.running,
+			context: this.context,
 			memory: this.memory,
-		  context: this.context
+			instructionResponse
 		}
   }
 
@@ -79,12 +83,12 @@ class CpuEngine {
 
 		// Push flags
 		this.context.sp -= 2
-		this.memory[Instruction.fix(this.context.sp) / 2] = this.context.f
+		this.memory[Math.floor(Instruction.fix(this.context.sp) / 2)] = this.context.f
 
 		// Push PC
 		this.context.sp -= 4
-		this.memory[Instruction.fix(this.context.sp) / 2] = this.context.pc  >> 16
-		this.memory[Instruction.fix(this.context.sp + 2) / 2] = this.context.pc  & 0xFFFF
+		this.memory[Math.floor(Instruction.fix(this.context.sp) / 2)] = this.context.pc  >> 16
+		this.memory[Math.floor(Instruction.fix(this.context.sp + 2) / 2)] = this.context.pc  & 0xFFFF
 
 		if (this.irq0) {
 			// Jump to the IRQ1 handler
@@ -145,6 +149,10 @@ class CpuEngine {
 		// refreshUI(context.mdl.addr_instr[Instruction.fix(context.pc )])
 	}
 
+	halt () {
+		this.running = false
+	}
+
 	inject(memory, lines, addressInstruction) {
 		this.memory = memory
 		this.lines = lines
@@ -165,7 +173,7 @@ class CpuEngine {
 			r11: 0,
 			r12: 0,
 			r13: 0,
-			pc: 0,
+			pc: 45000,
 			sp: 0,
 			h: 0,
 			f: 0

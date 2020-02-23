@@ -11,9 +11,9 @@ export default class IncSMReg extends Instruction {
 	}
 
 	exec ({ context, memory }) {
-		const old = memory[Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]] ) / 2]
+		const old = memory[Math.floor(Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]] ) / 2)]
 		const result = old + 1
-		memory[Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]] ) / 2] = result
+		memory[Math.floor(Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]] ) / 2)] = result
 		Instruction.markFlags(result, result, context)
 		Instruction.markOverflow(old, 1, result, context)
 

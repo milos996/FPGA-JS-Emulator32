@@ -7,8 +7,8 @@ const ASSEMBLER_INSTRUCTION_EXPRESSION = (sdestination) => `inc.w [ ${sdestinati
 export default class IncWMRegXX extends Instruction {
 	constructor (memory, address, source, destination, symbolTable) {
 		super(memory, address, source, destination, symbolTable)
-		this.setArgument32()
-		super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION(this.sdestination))
+		this.setArgument32(memory)
+		super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION(this.sdestination), symbolTable)
 	}
 
 	exec ({ context, memory }) {

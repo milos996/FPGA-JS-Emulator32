@@ -3,7 +3,7 @@ import fileParser from '@/services/parsers/FileParser';
 import { cpuParser } from '@/services/cpu/CpuParser'
 import cpuEngine from '@/services/cpu/CpuEngine';
 import ApplicationContext from '@/context/Context';
-import { SET_MEMORY, SET_CONTEXT, SET_INSTRUCTIONS } from '@/store/Actions';
+import { SET_MEMORY, SET_CONTEXT, SET_INSTRUCTIONS, UPDATE_OUTPUT } from '@/store/Actions';
 
 export default function ControlComponent() {
   const [file, setFile] = useState(null);
@@ -18,17 +18,35 @@ export default function ControlComponent() {
     setFile(files[0]);
   }
 
-  function handleStart() {
-    const { memory, context } = cpuEngine.run()
-    dispatch({ type: SET_MEMORY, payload: memory})
-    dispatch({type: SET_CONTEXT, payload: context})
+  async function handleStart() {
+    cpuEngine.inject(state.memory, state.lines, state.addressInstruction)
+    console.log({
+      addressInstruction: state.addressInstruction
+    })
+    
+    let running = true
+
+		while (running) {
+      const {
+        shouldRunAgain,
+        instructionResponse,
+        context,
+        memory
+      } = cpuEngine.run()
+
+      await dispatch({ type: SET_MEMORY, payload: memory})
+      await dispatch({type: SET_CONTEXT, payload: context})
+
+      instructionResponse && await dispatch({ type: UPDATE_OUTPUT, payload: instructionResponse })
+
+      running = shouldRunAgain
+		}
   }
 
   useEffect(() => {
     async function parseFile() {
       if (file) {
         const { data } = await fileParser.parse(file);
-        console.log({ data })
 
         dispatch({ type: SET_MEMORY, payload: data });
       }
@@ -38,12 +56,15 @@ export default function ControlComponent() {
   }, [file]);
 
   useEffect(() => {
-    console.log(state.memory);
+
+    async function parseInstructions() {
+     const instructionsSet = await cpuParser.parse(state.memory, state.symbolTable);
+
+     dispatch({ type: SET_INSTRUCTIONS, payload: instructionsSet });
+    }
 
     if (state.memory.length > 0) {
-      const instructionsSet = cpuParser.parse(state.memory, state.symbolTable);
-
-      dispatch({ type: SET_INSTRUCTIONS, payload: instructionsSet });
+      parseInstructions()
     }
 
   }, [state.memory])
@@ -58,11 +79,11 @@ export default function ControlComponent() {
         multiple={false}
       />
       <button onClick={handleStart}>Start</button>
-      <ul>
+      {/* <ul>
         {state.memory.slice(0, 1000).map((val, index) => (
           <li key={index}>{val}</li>
         ))}
-      </ul>
+      </ul> */}
     </div>
   );
-}
+        }

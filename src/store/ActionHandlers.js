@@ -25,3 +25,9 @@ export function SET_CONTEXT_HANDLER (currState, context) {
     }
   }
 }
+export function SET_OUTPUT_PAYLOAD (currState, outputPayload) {
+  return {
+    ...currState,
+    outputPayload: { ...outputPayload }
+  }
+}

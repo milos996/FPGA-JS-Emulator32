@@ -12,7 +12,7 @@ export default class StSMRegXXXRegY extends Instruction {
 
 	exec ({ context, memory }) {
 		// TODO: cast to  `short` ->> (short) context[REGISTER_VALUE_NAME_MAPPER[this.source]]
-		memory[Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  + this.argument) / 2] =
+		memory[Math.floor(Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]]  + this.argument) / 2)] =
 		  context[REGISTER_VALUE_NAME_MAPPER[this.source]]
 
 		context.pc  += 6

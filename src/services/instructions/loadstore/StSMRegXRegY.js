@@ -6,14 +6,20 @@ const ASSEMBLER_INSTRUCTION_EXPRESSION = (sdestination, ssource) => `st.s [${sde
 export default class StSMRegXRegY extends Instruction {
 	constructor (memory, address, source, destination, symbolTable) {
 		super(memory, address, source, destination, symbolTable)
-		super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION(this.sdestination, this.ssource))
+		super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION(this.sdestination, this.ssource), symbolTable)
 	}
 
 	exec ({ context, memory }) {
 		// TODO: -->> (short) context[REGISTER_VALUE_NAME_MAPPER[this.source]]
-		memory[Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]] ) / 2] =
-		  context[REGISTER_VALUE_NAME_MAPPER[this.source]]
+		const address = Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]])
+		const content = context[REGISTER_VALUE_NAME_MAPPER[this.source]]
 
+		memory[Math.floor(address / 2)] = content
 		context.pc  += 2
+
+		return {
+			address: address,
+			content: content
+		}
 	}
 }

@@ -64,8 +64,8 @@ class Instruction {
   }
 
   setArgument32 (memory) {
-		const w1 = memory[(this.address + 2) / 2]
-		const w2 = memory[(this.address + 4) / 2]
+		const w1 = memory[Math.floor((this.address + 2) / 2)]
+		const w2 = memory[Math.floor((this.address + 4) / 2)]
 		this.argument = Instruction.fixInt(w1, w2)
 		this.hasArgument = true
 		this.argumentLength = 4
@@ -73,7 +73,7 @@ class Instruction {
 
   setArgument8 (memory) {
     // TODO short
-		const w1 = memory[(this.address + 2) / 2];
+		const w1 = memory[Math.floor((this.address + 2) / 2)];
 		this.argument = Instruction.fix8(w1);
 		this.hasArgument = true;
 		this.argumentLength = 2;
@@ -81,7 +81,7 @@ class Instruction {
 
 	setArgument (memory) {
     // TODO short
-    const w1 = memory[(this.address + 2) / 2];
+    const w1 = memory[Math.floor((this.address + 2) / 2)];
 
 		this.argument = Instruction.fix(w1);
 		this.hasArgument = true;
@@ -209,13 +209,13 @@ class Instruction {
       context.f & 0xfffe
 
 		// P flag
-    context.f =  (r < 0 || (r & 0x80000000) == 1) ?
+    context.f =  ((r < 0) || ((r & 0x80000000) == 1)) ?
       context.f & 0xfff7 :
       context.f | 0x8
 
 		//TODO: long number `L` -->> if ((result & 0x100000000L) != 0) {
 		// C flag
-    context.f = (result & 0x100000000 != 0) ?
+    context.f = ((result & 0x100000000) != 0) ?
       context.f | 2 :
       context.f & 0xd
 	}

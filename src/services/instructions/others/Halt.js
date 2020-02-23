@@ -1,4 +1,5 @@
 import Instruction from '../Instruction'
+import cpuEngine from '@/services/cpu/CpuEngine'
 
 const ASSEMBLER_INSTRUCTION_EXPRESSION = () => "halt"
 
@@ -9,8 +10,8 @@ export default class Halt extends Instruction {
 		super.setContent()
 	}
 
-	exec ({ context, memory }) {
-		//context.engine.halt()
+	exec () {
+		cpuEngine.halt()
 		//context.pc ++
 
 		// TODO Check if this is necessary

@@ -17,8 +17,8 @@ export default class CMP_B_REGX_MREGY_XX extends Instruction {
 		const fixedAddress = Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.source]]  + this.argument)
 
 		const operand = (fixedAddress & 1 == 0) ?
-			(memory[fixedAddress / 2] >> 8) & 0xFF :
-			(memory[fixedAddress / 2] & 255) & 0xFF
+			(memory[Math.floor(fixedAddress / 2)] >> 8) & 0xFF :
+			(memory[Math.floor(fixedAddress / 2)] & 255) & 0xFF
 
 		const result = context[REGISTER_VALUE_NAME_MAPPER[this.destination]]   - operand
 
