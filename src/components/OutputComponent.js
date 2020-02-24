@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useContext} from "react"
 import ApplicationContext from '@/context/Context'
 import { OUTPUT_MODES } from '@/constants/general'
-import { COLORS_MAPPER, COLORS, BLACK} from '@/constants/output'
+import { COLORS_MAPPER, COLORS, BLACK, WHITE} from '@/constants/output'
 
 
 const MAPPER_FUNCTION_FOR_OUTPUT = {
@@ -31,20 +31,49 @@ function getTextColor(content, inverse = true) {
 }
 
 export default function OutputComponent() {
-  const [output, setOutput] = useState([])
+  // Array.apply is meant to be used for some kind of optimization but doesn't work as expected.
+  // It slows down the process even more, especially because number of elements are greater then 10000
+  const [output, setOutput] = useState(
+    Array.apply(null, Array(0)).map(
+      (el, index) => (
+        {
+          address: index,
+          value: " ",
+          foregroundColor: COLORS[BLACK],
+          backgroundColor: COLORS[WHITE]
+        }
+      )
+    )
+  )
   const { dispatch, state } = useContext(ApplicationContext);
 
   useEffect(() => {
     function updateOutput() {
-
       console.log('address: ' + state.outputPayload.address + ' ,content: ' + state.outputPayload.content);
 
       const calculatedValueWithColors = MAPPER_FUNCTION_FOR_OUTPUT[state.outputMode](state.outputPayload.content)
+      const index = output.findIndex((element) => element.address === state.outputPayload.address)
+
+      if (index !== -1) {
+        setOutput([
+          ...output.slice(0, index),
+          {
+            address: state.outputPayload.address,
+            ...calculatedValueWithColors
+          },
+          ...output.slice(index + 1)
+        ])
+        return
+      }
 
       setOutput([
         ...output,
-        calculatedValueWithColors
+        {
+          address: state.outputPayload.address,
+          ...calculatedValueWithColors
+        }
       ])
+
     }
 
     !!state.outputPayload && updateOutput()

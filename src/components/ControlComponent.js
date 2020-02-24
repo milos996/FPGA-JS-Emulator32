@@ -44,6 +44,10 @@ export default function ControlComponent() {
   }
 
   async function runnn() {
+
+    // TIMEOUT IS USED BECAUSE IF YOU WANT TO SEE IMMEDIATE OUTPUT YOU NEED TO DELAY FOR CERTAIN PERIOD
+    // SO VIEW COULD RE-RENDER THE DOM. THIS SLOWS THE PROCESS. IF YOU WANT TO GET OUTPUT FASTER WITHOUT IMMEDIATE
+    // OUTPUT RESPONSE THEN JUST COMMENT LINES 51. AND 67.
     setTimeout( async () => {
       const {
         shouldRunAgain,
@@ -55,7 +59,9 @@ export default function ControlComponent() {
       await dispatch({ type: SET_MEMORY, payload: memory})
       await dispatch({type: SET_CONTEXT, payload: context})
 
-      instructionResponse.content || instructionResponse.content === 0 && await dispatch({ type: UPDATE_OUTPUT, payload: instructionResponse })
+      if (instructionResponse.content ) {
+        await dispatch({ type: UPDATE_OUTPUT, payload: instructionResponse })
+      }
 
       shouldRunAgain && runnn()
     });

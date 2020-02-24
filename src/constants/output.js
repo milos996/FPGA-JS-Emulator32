@@ -1,11 +1,11 @@
 
 const RED = 'red'
-const WHITE = 'white'
 const GREEN = 'green'
 const BLUE = 'blue'
 const PINK = 'pink'
 const YELLOW = 'yellow'
 const LIGHT_BLUE = 'light_blue'
+export const WHITE = 'white'
 export const BLACK = 'black'
 
 

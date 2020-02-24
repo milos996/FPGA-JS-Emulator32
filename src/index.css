@@ -13,14 +13,20 @@ code {
 }
 
 .output {
-  height: 100px;
+  height: 1240px;
   width: 100%;
-  background: lightgray;
-  color: black;
+  background: black;
+  color: lightgray;
+  border: green solid 3px;
+  border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
 }
 
 .letter-spacing {
   font-size: 18px;
   padding: 2px;
   font-family: monospace;
+  height: 20px;
 }
