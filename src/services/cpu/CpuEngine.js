@@ -34,6 +34,8 @@ class CpuEngine {
 
 		const instruction = this.addressInstruction[Instruction.fix(this.context.pc)]
 
+		console.log('PC: ', this.context.pc)
+
 
 		// if (instruction.breakPoint) {
 		// 	this.stop()
@@ -42,13 +44,13 @@ class CpuEngine {
 
 
 		try {
-			if (instruction.constructor.name !== 'Nop') {
-				console.log(`INSTRUCTION -> ${instruction.assembler}  ----  ${instruction.constructor.name}`);
+			// if (instruction.constructor.name !== 'Nop') {
+			// 	console.log(`INSTRUCTION -> ${instruction.assembler}  ----  ${instruction.constructor.name}`);
 
-				// if (`INSTRUCTION -> ${instruction.assembler}  ----  ${instruction.constructor.name}` === 'INSTRUCTION -> jp(jge) 0x%08x b29e  ----  JP_XX') {
-				// 	const a=0
-				// }
-			}
+			// 	// if (`INSTRUCTION -> ${instruction.assembler}  ----  ${instruction.constructor.name}` === 'INSTRUCTION -> jp(jge) 0x%08x b29e  ----  JP_XX') {
+			// 	// 	const a=0
+			// 	// }
+			// }
 
 			instructionResponse = instruction.exec({
 				context: this.context,

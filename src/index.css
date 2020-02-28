@@ -30,3 +30,19 @@ code {
   font-family: monospace;
   height: 20px;
 }
+
+.horizontal-alignment {
+  display: flex;
+  flex-direction: row;
+}
+
+.vertical-alignment {
+  display: flex;
+  flex-direction: column;
+}
+
+.home-part-1 {
+  width: 60%;
+  padding: 10px;
+  margin-right: 5px;
+}

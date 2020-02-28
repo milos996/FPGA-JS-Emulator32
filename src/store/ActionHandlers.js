@@ -25,9 +25,23 @@ export function SET_CONTEXT_HANDLER (currState, context) {
     }
   }
 }
-export function SET_OUTPUT_PAYLOAD (currState, outputPayload) {
+export function SET_OUTPUT_PAYLOAD_HANDLER (currState, outputPayload) {
   return {
     ...currState,
     outputPayload: { ...outputPayload }
+  }
+}
+
+export function SET_SYMBOLS_HANDLER (currState, symbolsMapper) {
+  return {
+    ...currState,
+    symbolTable: { ...symbolsMapper }
+  }
+}
+
+export function SET_HAS_SYMBOL_TABLE_HANDLER (currState, hasSymbolTable) {
+  return {
+    ...currState,
+    hasSymbolTable
   }
 }

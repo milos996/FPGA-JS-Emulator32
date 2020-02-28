@@ -31,13 +31,13 @@ class Instruction {
 
     this.setContent()
 
-    const symbols = symbolTable.hasOwnProperty(address) ? symbolTable[this.address] : null
+    const symbols = symbolTable.hasOwnProperty(`0x${address.toString(16)}`) ? symbolTable[`0x${address.toString(16)}`] : null
 
-		if (symbols !== null && symbols.size() > 0) {
-			this.symbolAddress = symbols.get(0)
-			this.addrStr = formatUtil('%08x (%s)', this.address, symbols.get(0))
+		if (symbols !== null && symbols.length > 0) {
+			this.symbolAddress = symbols
+			this.addrStr = formatUtil('%s (%s)', this.address.toString(16), symbols)
 		} else {
-			this.addrStr = formatUtil('%08x', this.address)
+			this.addrStr = formatUtil('%s', this.address.toString(16))
 			this.symbolAddress = this.addrStr
 		}
   }
@@ -45,17 +45,17 @@ class Instruction {
   setContent () {
     //TODO: CHeck `format`, potential bug
     if (!this.hasArgument) {
-      this.content = formatUtil('%04x', this.opcode)
+      this.content = formatUtil('%s', this.opcode.toString(16))
       return
     }
 
 		if (this.argumentLength === 4) {
-      this.content = formatUtil('%04x, %08x', this.opcode, this.argument)
+      this.content = formatUtil('%s, %s', this.opcode.toString(16), this.argument.toString(16))
       return
     }
 
 		if (this.argumentLength === 2) {
-      this.content = formatUtil('%04x, %04x', this.opcode, this.argument)
+      this.content = formatUtil('%s, %s', this.opcode.toString(16), this.argument.toString(16))
     }
   }
 
@@ -89,63 +89,45 @@ class Instruction {
 	}
 
   setAssembler(format, symbolTable) {
-    if (format !== 'nop' && this.argument !== null) {
-      this.assembler = formatUtil(format, this.argument.toString(16))
-      return;
-    }
-
-
 		if (!this.hasArgument) {
       this.assembler = format
       return
     }
 
-    const l = symbolTable.hasOwnProperty(this.argument) ? symbolTable[this.argument] : null
+    const argumentSymbol = symbolTable.hasOwnProperty(`0x${this.argument.toString(16)}`) ? symbolTable[`0x${this.argument.toString(16)}`] : null
 
     // negativan broj kao argument
-		if ((this.argument & 0x80000000) !== 0) {
+		// if ((this.argument & 0x80000000) !== 0) {
 
-			if (!!l && l.length > 0) {
-				const idx = this.findLabel(l)
+		// 	if (!!l && l.length) {
+		// 		const idx = this.findLabel(l)
 
-        if (idx === -1) {
-					this.assembler = formatUtil(format + '      ; -%08x', this.argument, Instruction.neg(this.argument))
-					return
-        }
+    //     if (idx === -1) {
+		// 			this.assembler = formatUtil(format + '      ; -%08x', this.argument, Instruction.neg(this.argument))
+		// 			return
+    //     }
 
-				let format2 = format.replace(/0x/g, '')
-				format2 = format2.replace(/02x/g, 's')
-				format2 = format2.replace(/04x/g, 's')
-        format2 = format2.replace(/08x/g, 's')
+		// 		let format2 = format.replace(/0x/g, '')
+		// 		format2 = format2.replace(/02x/g, 's')
+		// 		format2 = format2.replace(/04x/g, 's')
+    //     format2 = format2.replace(/08x/g, 's')
 
-        this.assembler = formatUtil(format2 + '      ; -%08x', l.get(idx), Instruction.neg(this.argument))
+    //     this.assembler = formatUtil(format2 + '      ; -%08x', l.get(idx), Instruction.neg(this.argument))
 
-        return
-      }
+    //     return
+    //   }
 
-			this.assembler = formatUtil(format + '      ; -%08x', this.argument, Instruction.neg(this.argument))
+		// 	this.assembler = formatUtil(format + '      ; -%08x', this.argument, Instruction.neg(this.argument))
 
+    //   return
+    // }
+
+    if (argumentSymbol && argumentSymbol.length) {
+      this.assembler = formatUtil(format, argumentSymbol)
       return
     }
 
-		if (!!l && l.length > 0) {
-			let idx = this.findLabel(l)
-
-      idx = idx === -1 ? 0 : idx
-
-			let format2 = format.replace(/0x/g, '')
-			format2 = format2.replace(/02x/g, 's')
-			format2 = format2.replace(/04x/g, 's')
-			format2 = format2.replace(/08x/g, 's')
-
-      this.assembler = formatUtil(format2, l[idx])
-    }
-
-    if (format !== 'nop') {
-      console.log('this is it');
-    }
-
-    this.assembler = formatUtil(format, this.argument)
+    this.assembler = formatUtil(format, this.argument.toString(16))
   }
 
   findLabel(l) {

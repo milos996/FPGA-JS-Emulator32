@@ -62,22 +62,50 @@ export default function OutputComponent() {
             ...calculatedValueWithColors
           },
           ...output.slice(index + 1)
-        ])
-        return
+        ].sort((a, b) => a - b))
+      } else {
+        setOutput([
+          ...output,
+          {
+            address: state.outputPayload.address,
+            ...calculatedValueWithColors
+          }
+        ].sort((firstElement, secondElement) => firstElement.address - secondElement.address))
       }
-
-      setOutput([
-        ...output,
-        {
-          address: state.outputPayload.address,
-          ...calculatedValueWithColors
-        }
-      ])
-
     }
 
     !!state.outputPayload && updateOutput()
   }, [state.outputPayload])
+
+
+  function cellRenderer({columnIndex, key, rowIndex, style}) {
+    return (
+      <div key={key} style={style}>
+        <span
+            style={{
+              color:  output[rowIndex * 150 + columnIndex] ? output[rowIndex * 150 + columnIndex].foregroundColor : COLORS[WHITE],
+              backgroundColor:  output[rowIndex * 150 + columnIndex] ? output[rowIndex * 150 + columnIndex].backgroundColor : COLORS[BLACK]
+            }}
+          >
+             {output[rowIndex * 150 + columnIndex] ? output[rowIndex * 150 + columnIndex].value: " "}
+          </span>
+      </div>
+    );
+  }
+
+  // return (
+  //   <div>
+  //      <Grid
+  //       cellRenderer={cellRenderer}
+  //       columnCount={100}
+  //       columnWidth={20}
+  //       height={780}
+  //       rowCount={1000}
+  //       rowHeight={20}
+  //       width={800}
+  //      />
+  //   </div>
+  // )
 
   return (
     <div className="output">

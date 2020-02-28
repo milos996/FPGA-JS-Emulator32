@@ -28,7 +28,8 @@ export const initialState = {
 		f: 0
 	},
 	outputPayload: null,
-	outputMode: OUTPUT_MODES.TEXT
+	outputMode: OUTPUT_MODES.TEXT,
+	hasSymbolTable: false
 };
 
 export const reducer = function(state, action) {
@@ -44,5 +45,7 @@ const ACTION_HANDLER = {
   [Actions.SET_MEMORY]: ActionHandlers.SET_MEMORY_HANDLER,
   [Actions.SET_INSTRUCTIONS]: ActionHandlers.SET_INSTRUCTIONS_HANDLER,
 	[Actions.SET_CONTEXT]: ActionHandlers.SET_CONTEXT_HANDLER,
-	[Actions.UPDATE_OUTPUT]: ActionHandlers.SET_OUTPUT_PAYLOAD
+	[Actions.UPDATE_OUTPUT]: ActionHandlers.SET_OUTPUT_PAYLOAD_HANDLER,
+	[Actions.SET_SYMBOLS]: ActionHandlers.SET_SYMBOLS_HANDLER,
+	[Actions.HAS_SYMBOL_TABLE]: ActionHandlers.SET_HAS_SYMBOL_TABLE_HANDLER
 };

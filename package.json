@@ -6,7 +6,8 @@
     "@craco/craco": "^5.6.2",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
-    "react-scripts": "3.2.0"
+    "react-scripts": "3.2.0",
+    "react-virtualized": "^9.21.2"
   },
   "scripts": {
     "start": "craco start",

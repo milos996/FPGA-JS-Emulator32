@@ -7,13 +7,18 @@ export default function InstructionsComponent() {
   const { dispatch, state } = useContext(ApplicationContext);
 
   useEffect(() => {
-    function parseMemoryToInstructions() {
-      const instructionsSet = cpuParser.parse(state.memory, state.symbolTable);
+    async function parseInstructions() {
+      if ((state.hasSymbolTable && Object.keys(state.symbolTable).length) || !state.hasSymbolTable) {
+        const instructionsSet = await cpuParser.parse(state.memory, state.symbolTable);
 
-      dispatch({ type: SET_INSTRUCTIONS, payload: instructionsSet });
+        dispatch({ type: SET_INSTRUCTIONS, payload: instructionsSet });
+      }
     }
 
-    parseMemoryToInstructions();
-  }, [state.memory]);
+    if (state.memory.length > 0) {
+      parseInstructions()
+    }
+
+  }, [state.memory, state.symbolTable])
   return <div></div>;
 }

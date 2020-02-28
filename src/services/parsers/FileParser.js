@@ -4,7 +4,7 @@ class FileParser {
   async parse(file) {
 
     if (file === null) {
-      return null
+      return { data: null }
     }
 
    const extension = file.name.split('.').pop();
@@ -15,6 +15,10 @@ class FileParser {
 
     if (extension === FILE_EXTENSIONS.BIN) {
       return await this.binParse(file)
+    }
+
+    if (extension === FILE_EXTENSIONS.SYM) {
+      return await this.symParse(file)
     }
   }
 
@@ -88,6 +92,38 @@ class FileParser {
         };
 
         reader.readAsArrayBuffer(file);
+      } catch (error) {
+        reject({ error })
+      }
+    })
+  }
+
+  symParse (file) {
+    return new Promise((resolve, reject) => {
+      try {
+        const reader = new FileReader();
+
+        reader.onload = e => {
+          const lines = reader.result.split('\n')
+
+          let map = {}
+
+          for (let index = 0; index < lines.length; index++) {
+            const element = lines[index];
+
+            if (element.trim() === '') {
+              continue
+            }
+
+            const splitParts = element.split('=')
+
+            map[splitParts[1].trim()] = splitParts[0].trim()
+          }
+
+          resolve({ data: map })
+        };
+
+        reader.readAsText(file);
       } catch (error) {
         reject({ error })
       }
