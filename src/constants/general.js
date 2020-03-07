@@ -17,3 +17,10 @@ export const OUTPUT_MODES = {
   GRAPHICS_MODE_640_480: 'graphics_mode_640_480'
 }
 
+export const COLORS = {
+  PRIMARY: '#4F87B8',
+  SECONDARY: '#F17300',
+  PRIMARY_LIGHT: '#81A4CD',
+  NEUTRAL: '#DBE4EE',
+  PRIMARY_DARK: '#054A91'
+}

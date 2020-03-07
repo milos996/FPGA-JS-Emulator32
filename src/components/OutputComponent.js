@@ -33,24 +33,11 @@ function getTextColor(content, inverse = true) {
 export default function OutputComponent() {
   // Array.apply is meant to be used for some kind of optimization but doesn't work as expected.
   // It slows down the process even more, especially because number of elements are greater then 10000
-  const [output, setOutput] = useState(
-    Array.apply(null, Array(0)).map(
-      (el, index) => (
-        {
-          address: index,
-          value: " ",
-          foregroundColor: COLORS[BLACK],
-          backgroundColor: COLORS[WHITE]
-        }
-      )
-    )
-  )
+  const [output, setOutput] = useState([])
   const { dispatch, state } = useContext(ApplicationContext);
 
   useEffect(() => {
     function updateOutput() {
-      console.log('address: ' + state.outputPayload.address + ' ,content: ' + state.outputPayload.content);
-
       const calculatedValueWithColors = MAPPER_FUNCTION_FOR_OUTPUT[state.outputMode](state.outputPayload.content)
       const index = output.findIndex((element) => element.address === state.outputPayload.address)
 
@@ -78,34 +65,14 @@ export default function OutputComponent() {
   }, [state.outputPayload])
 
 
-  function cellRenderer({columnIndex, key, rowIndex, style}) {
-    return (
-      <div key={key} style={style}>
-        <span
-            style={{
-              color:  output[rowIndex * 150 + columnIndex] ? output[rowIndex * 150 + columnIndex].foregroundColor : COLORS[WHITE],
-              backgroundColor:  output[rowIndex * 150 + columnIndex] ? output[rowIndex * 150 + columnIndex].backgroundColor : COLORS[BLACK]
-            }}
-          >
-             {output[rowIndex * 150 + columnIndex] ? output[rowIndex * 150 + columnIndex].value: " "}
-          </span>
-      </div>
-    );
-  }
+  useEffect(() => {
 
-  // return (
-  //   <div>
-  //      <Grid
-  //       cellRenderer={cellRenderer}
-  //       columnCount={100}
-  //       columnWidth={20}
-  //       height={780}
-  //       rowCount={1000}
-  //       rowHeight={20}
-  //       width={800}
-  //      />
-  //   </div>
-  // )
+    if (state.reset) {
+      setOutput([])
+    }
+  }, [state.reset])
+
+
 
   return (
     <div className="output">

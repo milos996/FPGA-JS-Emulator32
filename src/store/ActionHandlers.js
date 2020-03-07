@@ -45,3 +45,46 @@ export function SET_HAS_SYMBOL_TABLE_HANDLER (currState, hasSymbolTable) {
     hasSymbolTable
   }
 }
+
+export function RESET_STATE_HANDLER (currState, reset) {
+  return {
+    ...currState,
+    reset
+  }
+}
+
+export const SET_CURRENT_BREAKPOINT_HANDLER = (currState, breakpointAddress) => {
+  return {
+    ...currState,
+    currentBreakpoint: breakpointAddress
+  }
+}
+
+export const SET_BREAKPOINTS_HANDLER = (currState, breakpoint) => {
+  const instructionIndex = currState.breakpoints.findIndex((instructionAddress) => instructionAddress === breakpoint)
+
+  if (instructionIndex !== -1) {
+    return {
+      ...currState,
+      breakpoints: [
+        ...currState.breakpoints.slice(0, instructionIndex),
+        ...currState.breakpoints.slice(instructionIndex + 1)
+      ]
+    }
+  }
+
+  return {
+    ...currState,
+    breakpoints: [
+      ...currState.breakpoints,
+      breakpoint
+    ]
+  }
+}
+
+export const CLEAR_ALL_BREAKPOINTS_HANDLER = (currState) => {
+  return {
+    ...currState,
+    breakpoints: []
+  }
+}

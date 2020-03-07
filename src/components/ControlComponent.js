@@ -2,12 +2,15 @@ import React, { useState, useEffect, useContext } from 'react';
 import fileParser from '@/services/parsers/FileParser';
 import cpuEngine from '@/services/cpu/CpuEngine';
 import ApplicationContext from '@/context/Context';
-import { SET_MEMORY, SET_CONTEXT, UPDATE_OUTPUT, SET_SYMBOLS, HAS_SYMBOL_TABLE } from '@/store/Actions';
+import { SET_MEMORY, SET_CONTEXT, UPDATE_OUTPUT, SET_SYMBOLS, HAS_SYMBOL_TABLE, RESET_STATE, SET_CURRENT_BREAKPOINT } from '@/store/Actions';
 
 export default function ControlComponent() {
-  const [files, setFiles] = useState([]);
   const { dispatch, state } = useContext(ApplicationContext);
-
+  const [files, setFiles] = useState([]);
+  const [stopFlag, setStopFlag] = useState(() => false)
+  const [startFlag, setStartFlag] = useState(() => false)
+  const [stepOverFlag, setStepOverFlag] = useState(() => false)
+  const [engineProcessedData, setEngineResponseData] = useState({ shouldRunAgain: true })
 
   function handleUploadFile(input) {
     const fileInput = input.currentTarget;
@@ -19,37 +22,29 @@ export default function ControlComponent() {
   }
 
   async function handleStart() {
-    cpuEngine.inject(state.memory, state.lines, state.addressInstruction)
+    if (!startFlag || (startFlag && !stopFlag)) {
+      cpuEngine.inject(state.memory, state.lines, state.addressInstruction)
+    }
 
-    run()
+    setStartFlag(true)
+    setStopFlag(false)
   }
 
-  async function run() {
-    // TIMEOUT IS USED BECAUSE IF YOU WANT TO SEE IMMEDIATE OUTPUT YOU NEED TO DELAY FOR CERTAIN PERIOD
-    // SO VIEW COULD RE-RENDER THE DOM.
-    setTimeout( async () => {
-      const {
-        shouldRunAgain,
-        instructionResponse,
-        context,
-        memory
-      } = cpuEngine.run()
+  function handleStop () {
+    setStopFlag(true)
+  }
 
-      await dispatch({ type: SET_MEMORY, payload: memory})
-      await dispatch({type: SET_CONTEXT, payload: context})
+  function handleStepOver () {
+    setStepOverFlag(true)
+  }
 
-      if (instructionResponse.content || instructionResponse.content === 0) {
-        await dispatch({ type: UPDATE_OUTPUT, payload: instructionResponse })
-      }
-
-      shouldRunAgain && run()
-    });
+  function handleReset () {
+    dispatch({ type: RESET_STATE, payload: state.reset + 1 })
+    setStartFlag(false)
   }
 
   useEffect(() => {
     async function parseFile() {
-      console.log(files);
-
       if (files.length) {
         let binFile = files[0]
         let symFile = null
@@ -64,11 +59,8 @@ export default function ControlComponent() {
             : files[1]
         }
 
-        console.log(binFile);
-
         const { data } = await fileParser.parse(binFile);
         dispatch({ type: SET_MEMORY, payload: data });
-        console.log({data});
 
         if (symFile) {
           const { data: symData } = await fileParser.parse(symFile)
@@ -82,6 +74,38 @@ export default function ControlComponent() {
     parseFile();
   }, [files]);
 
+  useEffect(() => {
+    async function run() {
+        if (state.currentBreakpoint !== cpuEngine.context.pc && state.breakpoints.includes(cpuEngine.context.pc) && !stepOverFlag) {
+          dispatch({type: SET_CURRENT_BREAKPOINT, payload: cpuEngine.context.pc})
+          setStopFlag(true)
+          return
+        }
+
+        dispatch({type: SET_CURRENT_BREAKPOINT, payload: null})
+
+        const processedEngineData = cpuEngine.run()
+
+        await dispatch({ type: SET_MEMORY, payload: processedEngineData.memory})
+        await dispatch({type: SET_CONTEXT, payload: processedEngineData.context})
+
+        if (processedEngineData.instructionResponse.content || processedEngineData.instructionResponse.content === 0) {
+          await dispatch({ type: UPDATE_OUTPUT, payload: processedEngineData.instructionResponse })
+        }
+
+        setEngineResponseData(processedEngineData)
+
+        if (stepOverFlag) {
+          setStepOverFlag(false)
+        }
+    }
+
+
+    if ((startFlag && !stopFlag && engineProcessedData.shouldRunAgain) || (stepOverFlag && engineProcessedData.shouldRunAgain)) {
+      run()
+    }
+  }, [startFlag, stopFlag, engineProcessedData, stepOverFlag])
+
   return (
     <div>
       <input
@@ -92,7 +116,10 @@ export default function ControlComponent() {
         onChange={handleUploadFile}
         multiple={true}
       />
-      <button onClick={handleStart}>Start</button>
+      <button className="my-button" onClick={handleStart} disabled={!files.length}> Start </button>
+      <button className="my-button" onClick={handleStop} disabled={!files.length}> Stop </button>
+      <button className="my-button" onClick={handleStepOver} disabled={!files.length}> Step over </button>
+      <button className="my-button" onClick={handleReset} disabled={!files.length}> Reset </button>
     </div>
   );
         }

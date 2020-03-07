@@ -29,7 +29,10 @@ export const initialState = {
 	},
 	outputPayload: null,
 	outputMode: OUTPUT_MODES.TEXT,
-	hasSymbolTable: false
+	hasSymbolTable: false,
+	reset: 0,
+	currentBreakpoint: null,
+	breakpoints: []
 };
 
 export const reducer = function(state, action) {
@@ -47,5 +50,9 @@ const ACTION_HANDLER = {
 	[Actions.SET_CONTEXT]: ActionHandlers.SET_CONTEXT_HANDLER,
 	[Actions.UPDATE_OUTPUT]: ActionHandlers.SET_OUTPUT_PAYLOAD_HANDLER,
 	[Actions.SET_SYMBOLS]: ActionHandlers.SET_SYMBOLS_HANDLER,
-	[Actions.HAS_SYMBOL_TABLE]: ActionHandlers.SET_HAS_SYMBOL_TABLE_HANDLER
+	[Actions.HAS_SYMBOL_TABLE]: ActionHandlers.SET_HAS_SYMBOL_TABLE_HANDLER,
+	[Actions.RESET_STATE]: ActionHandlers.RESET_STATE_HANDLER,
+	[Actions.SET_CURRENT_BREAKPOINT]: ActionHandlers.SET_CURRENT_BREAKPOINT_HANDLER,
+	[Actions.SET_BREAKPOINTS]: ActionHandlers.SET_BREAKPOINTS_HANDLER,
+	[Actions.CLEAR_ALL_BREAKPOINTS]: ActionHandlers.CLEAR_ALL_BREAKPOINTS_HANDLER
 };

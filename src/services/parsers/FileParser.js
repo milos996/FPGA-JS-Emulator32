@@ -30,7 +30,6 @@ class FileParser {
 
         reader.onload = e => {
           const buffer = reader.result;
-          console.log({buffer})
 
           //TODO: Check this, how it works
           let memory = Array(MEMORY_SIZE).fill(0);
@@ -39,11 +38,7 @@ class FileParser {
           let address = 0;
           for (let i = 0; i < words.length; i++) {
             const word = words[i];
-            console.log({address, word, intNum: parseInt(word, 16)})
-
             memory[address++] = parseInt(word, 16);
-            // if (EmulatorMain.DEBUG)
-            //   System.out.println(address - 1 + ": " + w + " == " + memory[address - 1])
           }
 
           resolve({ data: memory })

@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { useState }  from 'react';
 import ControlComponent from '@/components/ControlComponent';
 import OutputComponent from '@/components/OutputComponent';
 import RegistersAndFlagsComponent from '@/components/RegistersAndFlagsComponent';
 import StackFrameComponent from '@/components/StackFrameComponent';
 import MemoryComponent from '@/components/MemoryComponent';
+import Modal from 'react-modal';
 import InstructionsComponent from '@/components/InstructionsComponent';
+import { COLORS } from '@/constants/general';
 
 export default function HomePage() {
+
+  const [isMemoryModalOpen, setIsMemoryModalOpen] = useState(false)
+  // const [isStackFrameModalOpen, setIsStackFrameModalOpen] = useState(false)
+
   return (
     <div>
       <h1>FPGA EMULTAOR</h1>
@@ -16,16 +22,59 @@ export default function HomePage() {
           <OutputComponent />
         </div>
         <div className="vertical-alignment">
-          <InstructionsComponent />
           <RegistersAndFlagsComponent />
+          <InstructionsComponent />
           <div className="horizontal-alignment">
-            <button>Stack Frame</button>
-            <button>Memory</button>
+            {/* <button className="my-button" onClick={() => setIsStackFrameModalOpen(true)}>Stack Frame</button> */}
+            <button className="my-button flex-auto"
+              style={{
+                border: `${COLORS.PRIMARY_LIGHT} solid 1px`,
+                marginTop: 5,
+              }}
+              onClick={() => setIsMemoryModalOpen(true)}
+            >
+                <strong><i>Memory</i></strong>
+            </button>
           </div>
         </div>
       </div>
-      {/* <StackFrameComponent />
-      <MemoryComponent /> */}
+      {/* <Modal
+        style={{
+          content : {
+            top                   : '50%',
+            left                  : '50%',
+            right                 : 'auto',
+            bottom                : 'auto',
+            marginRight           : '-50%',
+          }
+        }}
+        ariaHideApp={false}
+        isOpen={isStackFrameModalOpen}
+        contentLabel="Example Modal"
+        shouldCloseOnOverlayClick={true}
+        shouldCloseOnEsc={true}
+        onRequestClose={() => setIsStackFrameModalOpen(false)}
+      >
+        <StackFrameComponent />
+      </Modal> */}
+      <Modal
+        ariaHideApp={false}
+        style={{
+          content : {
+            top: '30%',
+            left: 'auto',
+            right: '10px',
+            bottom: 'auto',
+          }
+        }}
+        isOpen={isMemoryModalOpen}
+        contentLabel="Example Modal"
+        shouldCloseOnOverlayClick={true}
+        shouldCloseOnEsc={true}
+        onRequestClose={() => setIsMemoryModalOpen(false)}
+      >
+        <MemoryComponent />
+      </Modal>
     </div>
   );
 }

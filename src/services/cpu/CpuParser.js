@@ -27,17 +27,12 @@ class CpuParser {
       }
 
       if (instruction.assembler !== 'nop') {
-
-        if (`INSTRUCTION -> ${instruction.assembler}  ----  ${instruction.constructor.name}`.includes('r2, 642120')) {
-            console.log({address});
-        }
-
         console.log(`${address}. INSTRUCTION -> ${instruction.assembler}  ----  ${instruction.constructor.name}`);
       }
 
       addressInstruction[instruction.address] = instruction;
     }
-    console.log('GOTOVO PARSIRANJE')
+    console.log('DONE PARSING')
 
     return {
       lines,

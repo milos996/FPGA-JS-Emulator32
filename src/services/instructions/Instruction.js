@@ -2,6 +2,7 @@ import { format as formatUtil } from 'util'
 import { SHORT_NUMBER } from '@/constants/general'
 import { REGISTER_VALUE_NAME_MAPPER } from '@/constants/registers'
 import cpuEngine from '@/services/cpu/CpuEngine'
+import { convertToHexNumber } from '@/utils/general'
 
 class Instruction {
 
@@ -31,7 +32,7 @@ class Instruction {
 
     this.setContent()
 
-    const symbols = symbolTable.hasOwnProperty(`0x${address.toString(16)}`) ? symbolTable[`0x${address.toString(16)}`] : null
+    const symbols = symbolTable.hasOwnProperty(convertToHexNumber(address)) ? symbolTable[convertToHexNumber(address.toString(16))] : null
 
 		if (symbols !== null && symbols.length > 0) {
 			this.symbolAddress = symbols
@@ -43,7 +44,6 @@ class Instruction {
   }
 
   setContent () {
-    //TODO: CHeck `format`, potential bug
     if (!this.hasArgument) {
       this.content = formatUtil('%s', this.opcode.toString(16))
       return
@@ -94,33 +94,7 @@ class Instruction {
       return
     }
 
-    const argumentSymbol = symbolTable.hasOwnProperty(`0x${this.argument.toString(16)}`) ? symbolTable[`0x${this.argument.toString(16)}`] : null
-
-    // negativan broj kao argument
-		// if ((this.argument & 0x80000000) !== 0) {
-
-		// 	if (!!l && l.length) {
-		// 		const idx = this.findLabel(l)
-
-    //     if (idx === -1) {
-		// 			this.assembler = formatUtil(format + '      ; -%08x', this.argument, Instruction.neg(this.argument))
-		// 			return
-    //     }
-
-		// 		let format2 = format.replace(/0x/g, '')
-		// 		format2 = format2.replace(/02x/g, 's')
-		// 		format2 = format2.replace(/04x/g, 's')
-    //     format2 = format2.replace(/08x/g, 's')
-
-    //     this.assembler = formatUtil(format2 + '      ; -%08x', l.get(idx), Instruction.neg(this.argument))
-
-    //     return
-    //   }
-
-		// 	this.assembler = formatUtil(format + '      ; -%08x', this.argument, Instruction.neg(this.argument))
-
-    //   return
-    // }
+    const argumentSymbol = symbolTable.hasOwnProperty(convertToHexNumber(this.argument)) ? symbolTable[convertToHexNumber(this.argument)] : null
 
     if (argumentSymbol && argumentSymbol.length) {
       this.assembler = formatUtil(format, argumentSymbol)

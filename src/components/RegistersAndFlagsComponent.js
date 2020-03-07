@@ -9,20 +9,25 @@ const LABELS_FOR_FLAGS = {
 export default function RegistersAndFlagsComponent () {
   const { state } = useContext(ApplicationContext);
 
-  function formatRegisterAndFlags (contextKey) {
-    const label = LABELS_FOR_FLAGS.hasOwnProperty(contextKey) ? LABELS_FOR_FLAGS[contextKey] : contextKey
+  function getLabel (contextKey) {
+    return (LABELS_FOR_FLAGS.hasOwnProperty(contextKey) ? LABELS_FOR_FLAGS[contextKey] : contextKey).toUpperCase()
+  }
 
+  function getValueOfContextKey(contextKey) {
     if (BINARY_CONVERSION.includes(contextKey)) {
-      return `${label.toUpperCase()} : ${state.context[contextKey].toString(2)}`
+      return state.context[contextKey].toString(2)
     }
 
-    return `${label.toUpperCase()} : ${state.context[contextKey].toString(16)}`
+    return state.context[contextKey].toString(16)
   }
 
   return (
-    <div className='vertical-alignment'>
+    <div className='horizontal-alignment flex-wrap'>
       {Object.keys(state.context).map((contextKey, index) => (
-        <span key={index}> {formatRegisterAndFlags(contextKey)} </span>
+        <div key={index} className="vertical-alignment flag-style">
+          <span> {getLabel(contextKey)} </span>
+          <span> {getValueOfContextKey(contextKey)} </span>
+        </div>
       ))}
     </div>
   )
