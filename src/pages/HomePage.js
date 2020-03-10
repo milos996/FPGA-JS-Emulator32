@@ -2,7 +2,6 @@ import React, { useState }  from 'react';
 import ControlComponent from '@/components/ControlComponent';
 import OutputComponent from '@/components/OutputComponent';
 import RegistersAndFlagsComponent from '@/components/RegistersAndFlagsComponent';
-import StackFrameComponent from '@/components/StackFrameComponent';
 import MemoryComponent from '@/components/MemoryComponent';
 import Modal from 'react-modal';
 import InstructionsComponent from '@/components/InstructionsComponent';
@@ -11,12 +10,11 @@ import { COLORS } from '@/constants/general';
 export default function HomePage() {
 
   const [isMemoryModalOpen, setIsMemoryModalOpen] = useState(false)
-  // const [isStackFrameModalOpen, setIsStackFrameModalOpen] = useState(false)
 
   return (
     <div>
       <h1>FPGA EMULTAOR</h1>
-      <div className="horizontal-alignment">
+      <div className="horizontal-alignment main">
         <div className="vertical-alignment home-part-1">
           <ControlComponent />
           <OutputComponent />
@@ -25,7 +23,6 @@ export default function HomePage() {
           <RegistersAndFlagsComponent />
           <InstructionsComponent />
           <div className="horizontal-alignment">
-            {/* <button className="my-button" onClick={() => setIsStackFrameModalOpen(true)}>Stack Frame</button> */}
             <button className="my-button flex-auto"
               style={{
                 border: `${COLORS.PRIMARY_LIGHT} solid 1px`,
@@ -38,25 +35,6 @@ export default function HomePage() {
           </div>
         </div>
       </div>
-      {/* <Modal
-        style={{
-          content : {
-            top                   : '50%',
-            left                  : '50%',
-            right                 : 'auto',
-            bottom                : 'auto',
-            marginRight           : '-50%',
-          }
-        }}
-        ariaHideApp={false}
-        isOpen={isStackFrameModalOpen}
-        contentLabel="Example Modal"
-        shouldCloseOnOverlayClick={true}
-        shouldCloseOnEsc={true}
-        onRequestClose={() => setIsStackFrameModalOpen(false)}
-      >
-        <StackFrameComponent />
-      </Modal> */}
       <Modal
         ariaHideApp={false}
         style={{

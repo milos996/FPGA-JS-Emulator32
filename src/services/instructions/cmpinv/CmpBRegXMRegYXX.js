@@ -1,7 +1,7 @@
 import Instruction from '../Instruction'
 import { REGISTER_VALUE_NAME_MAPPER } from '@/constants/registers'
 
-const ASSEMBLER_INSTRUCTION_EXPRESSION = (sdestination, ssource) => `cmp.b ${sdestination}, [${ssource} + 0x%08x]`
+const ASSEMBLER_INSTRUCTION_EXPRESSION = (sdestination, ssource) => `cmp.b ${sdestination}, [${ssource} + %s]`
 
 export default class CMP_B_REGX_MREGY_XX extends Instruction {
 	constructor (memory, address, source, destination, symbolTable) {

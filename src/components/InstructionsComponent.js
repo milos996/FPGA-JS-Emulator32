@@ -5,6 +5,7 @@ import { cpuParser } from '@/services/cpu/CpuParser';
 import { SET_INSTRUCTIONS, SET_BREAKPOINTS, CLEAR_ALL_BREAKPOINTS } from '@/store/Actions';
 import SingleInstruction from '@/components/instructions-component/SingleInstruction'
 import { COLORS } from '@/constants/general';
+import cpuEngine from '@/services/cpu/CpuEngine';
 
 const ROW_HEADER = [
   {
@@ -20,7 +21,6 @@ const ROW_HEADER = [
     label: 'Assembler'
   }
 ]
-const ROW_OFFSET = 8
 
 export default function InstructionsComponent() {
   const { dispatch, state } = useContext(ApplicationContext);
@@ -43,7 +43,7 @@ export default function InstructionsComponent() {
       }
     }
 
-    if (state.memory.length > 0) {
+    if (state.memory.length > 0 && !Object.keys(state.addressInstruction).length) {
       parseInstructions()
     }
 

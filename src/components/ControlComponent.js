@@ -7,6 +7,7 @@ import { SET_MEMORY, SET_CONTEXT, UPDATE_OUTPUT, SET_SYMBOLS, HAS_SYMBOL_TABLE, 
 export default function ControlComponent() {
   const { dispatch, state } = useContext(ApplicationContext);
   const [files, setFiles] = useState([]);
+  const [iteration, setIteration] = useState(0)
   const [stopFlag, setStopFlag] = useState(() => false)
   const [startFlag, setStartFlag] = useState(() => false)
   const [stepOverFlag, setStepOverFlag] = useState(() => false)
@@ -23,7 +24,7 @@ export default function ControlComponent() {
 
   async function handleStart() {
     if (!startFlag || (startFlag && !stopFlag)) {
-      cpuEngine.inject(state.memory, state.lines, state.addressInstruction)
+      cpuEngine.inject(state.memory, state.lines, state.addressInstruction, state.symbolTable)
     }
 
     setStartFlag(true)
@@ -76,33 +77,36 @@ export default function ControlComponent() {
 
   useEffect(() => {
     async function run() {
-        if (state.currentBreakpoint !== cpuEngine.context.pc && state.breakpoints.includes(cpuEngine.context.pc) && !stepOverFlag) {
-          dispatch({type: SET_CURRENT_BREAKPOINT, payload: cpuEngine.context.pc})
-          setStopFlag(true)
-          return
-        }
+      if (stepOverFlag) {
+        setStepOverFlag(false)
+      }
 
-        dispatch({type: SET_CURRENT_BREAKPOINT, payload: null})
+      if (state.currentBreakpoint !== cpuEngine.context.pc && state.breakpoints.includes(cpuEngine.context.pc) && !stepOverFlag) {
+        dispatch({type: SET_CURRENT_BREAKPOINT, payload: cpuEngine.context.pc})
+        setStopFlag(true)
+        return
+      }
 
-        const processedEngineData = cpuEngine.run()
+      dispatch({type: SET_CURRENT_BREAKPOINT, payload: null})
 
-        await dispatch({ type: SET_MEMORY, payload: processedEngineData.memory})
-        await dispatch({type: SET_CONTEXT, payload: processedEngineData.context})
+      const processedEngineData = cpuEngine.run()
 
-        if (processedEngineData.instructionResponse.content || processedEngineData.instructionResponse.content === 0) {
-          await dispatch({ type: UPDATE_OUTPUT, payload: processedEngineData.instructionResponse })
-        }
+      await dispatch({ type: SET_MEMORY, payload: processedEngineData.memory})
+      await dispatch({type: SET_CONTEXT, payload: processedEngineData.context})
 
-        setEngineResponseData(processedEngineData)
+      if (processedEngineData.instructionResponse.content || processedEngineData.instructionResponse.content === 0) {
+        await dispatch({ type: UPDATE_OUTPUT, payload: processedEngineData.instructionResponse })
+      }
 
-        if (stepOverFlag) {
-          setStepOverFlag(false)
-        }
+      setEngineResponseData(processedEngineData)
     }
 
 
     if ((startFlag && !stopFlag && engineProcessedData.shouldRunAgain) || (stepOverFlag && engineProcessedData.shouldRunAgain)) {
+      console.log('ITERATION:', iteration);
+
       run()
+      setIteration((currState) => currState+1)
     }
   }, [startFlag, stopFlag, engineProcessedData, stepOverFlag])
 

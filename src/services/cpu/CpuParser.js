@@ -21,7 +21,6 @@ class CpuParser {
       const lineLength = lines.push(instruction);
       instruction.tableLine = lineLength - 1;
 
-      //TODO: Maybe without hasArgument in instructions, argumentLength could be 0 at the beginning
       if (instruction.hasArgument) {
         address += instruction.argumentLength;
       }

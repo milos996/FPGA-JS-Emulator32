@@ -7,7 +7,7 @@ export default class LdWRegXMRegYXX extends Instruction {
 	constructor (memory, address, source, destination, symbolTable) {
 		super(memory, address, source, destination, symbolTable)
 		super.setArgument32(memory)
-		super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION(this.sdestination, this.ssource))
+		super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION(this.sdestination, this.ssource), symbolTable)
 	}
 
 	exec ({ context, memory }) {

@@ -2,7 +2,7 @@ import Instruction from '../Instruction'
 import { REGISTER_VALUE_NAME_MAPPER } from '@/constants/registers'
 
 const ASSEMBLER_INSTRUCTION_EXPRESSION = (sdestination, ssource) =>
-  `mov.w ${sdestination}, ${ssource} 0x%08x`
+  `mov.w ${sdestination}, ${ssource} %s`
 
 export default class MovWRegXRegYXX extends Instruction {
   constructor(memory, address, source, destination, symbolTable) {

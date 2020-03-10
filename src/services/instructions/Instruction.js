@@ -44,6 +44,10 @@ class Instruction {
   }
 
   setContent () {
+    if (!this.opcode) {
+      return
+    }
+
     if (!this.hasArgument) {
       this.content = formatUtil('%s', this.opcode.toString(16))
       return
@@ -154,7 +158,8 @@ class Instruction {
 			return
     }
 
-		context.f &= 0xfffb;
+    context.f &= 0xfffb;
+
   }
 
   //TODO: first parameter `long` -->> static markFlags(long res, int r, CpuContext ctx) {
@@ -174,6 +179,7 @@ class Instruction {
     context.f = ((result & 0x100000000) != 0) ?
       context.f | 2 :
       context.f & 0xd
+
 	}
 
   static sign(a) {
@@ -257,7 +263,7 @@ class Instruction {
       return
     }
 
-    if (realAddress & 0x80000000 == 0) {
+    if ((realAddress & 0x80000000) == 0) {
       memory[address] = value
       return
     }
@@ -283,7 +289,16 @@ class Instruction {
 			// 	}
 			// 	break;
 			// }
-	}
+  }
+
+  static fromPort(port) {
+    switch (port) {
+      case 690: {
+        return new Date().getTime()
+      }
+    }
+    return 0;
+  }
 }
 
 export default Instruction

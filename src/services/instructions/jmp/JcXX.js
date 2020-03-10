@@ -1,6 +1,6 @@
 import Instruction from '../Instruction'
 
-const ASSEMBLER_INSTRUCTION_EXPRESSION = () => 'jc 0x%08x"'
+const ASSEMBLER_INSTRUCTION_EXPRESSION = () => 'jc %s"'
 
 export default class JcXX extends Instruction {
 	constructor (memory, address, source, destination, symbolTable) {

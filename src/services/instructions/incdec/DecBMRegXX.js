@@ -1,7 +1,7 @@
 import Instruction from '../Instruction'
 import { REGISTER_VALUE_NAME_MAPPER } from '@/constants/registers'
 
-const ASSEMBLER_INSTRUCTION_EXPRESSION = (sdestination) => `dec.b [${sdestination} + 0x%08x]`
+const ASSEMBLER_INSTRUCTION_EXPRESSION = (sdestination) => `dec.b [${sdestination} + %s]`
 
 export default class DecBMRegXX extends Instruction {
 	constructor (memory, address, source, destination, symbolTable) {

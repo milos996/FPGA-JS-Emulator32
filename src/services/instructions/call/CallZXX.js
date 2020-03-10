@@ -1,6 +1,6 @@
 import CallXX from './CallXX'
 
-const ASSEMBLER_INSTRUCTION_EXPRESSION = () => 'callz 0x%08x'
+const ASSEMBLER_INSTRUCTION_EXPRESSION = () => 'callz %s'
 
 export default class CallZXX extends CallXX {
 	constructor (memory, address, source, destination, symbolTable) {

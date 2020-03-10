@@ -1,13 +1,13 @@
 import Instruction from '../Instruction'
 import { REGISTER_VALUE_NAME_MAPPER } from '@/constants/registers'
 
-const ASSEMBLER_INSTRUCTION_EXPRESSION = (sdestination) => `mov.b ${sdestination}, 0x%02x`
+const ASSEMBLER_INSTRUCTION_EXPRESSION = (sdestination) => `mov.b ${sdestination}, %s`
 
 export default class MovBRegXX extends Instruction {
 	constructor (memory, address, source, destination, symbolTable) {
 		super(memory, address, source, destination, symbolTable)
 		super.setArgument8(memory)
-		super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION(this.sdestination))
+		super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION(this.sdestination), symbolTable)
 	}
 
 	exec ({ context, memory }) {

@@ -2,7 +2,9 @@ import React, {useState, useEffect, useContext} from "react"
 import ApplicationContext from '@/context/Context'
 import { OUTPUT_MODES } from '@/constants/general'
 import { COLORS_MAPPER, COLORS, BLACK, WHITE} from '@/constants/output'
-
+import { KEY_VALUE_MAPPER } from '@/constants/output'
+import cpuEngine from '@/services/cpu/CpuEngine'
+import { SET_VALUE_IN_MEMORY } from '@/store/Actions'
 
 const MAPPER_FUNCTION_FOR_OUTPUT = {
   [OUTPUT_MODES.TEXT]: calculateResultText
@@ -31,10 +33,69 @@ function getTextColor(content, inverse = true) {
 }
 
 export default function OutputComponent() {
-  // Array.apply is meant to be used for some kind of optimization but doesn't work as expected.
-  // It slows down the process even more, especially because number of elements are greater then 10000
   const [output, setOutput] = useState([])
   const { dispatch, state } = useContext(ApplicationContext);
+
+  function handleKeyDownEvent (event) {
+    event.preventDefault();
+    try {
+      console.log(event.key);
+
+      const keyValue = KEY_VALUE_MAPPER[event.key]
+
+      if (!keyValue) {
+        throw new Error()
+      }
+
+      if (state.memory[cpuEngine.irq2_pressed_address / 2] === 0) {
+        return
+      }
+
+      dispatch({
+        type: SET_VALUE_IN_MEMORY,
+        payload: {
+          address: 24,
+          value: keyValue
+        }
+      })
+
+      cpuEngine.irq2_pressed = true
+      cpuEngine.irq2_released = false
+    } catch (error) {
+      console.log(`Key ${event.key} is not supported`)
+    }
+  }
+
+  function handleKeyUpEvent (event) {
+    event.preventDefault();
+    try {
+      console.log(event.key);
+
+      const keyValue = KEY_VALUE_MAPPER[event.key]
+
+      if (!keyValue) {
+        throw new Error()
+      }
+
+      if (state.memory[cpuEngine.irq2_released_address / 2] === 0) {
+        return
+      }
+
+      dispatch({
+        type: SET_VALUE_IN_MEMORY,
+        payload: {
+          address: 24,
+          value: keyValue
+        }
+      })
+
+      cpuEngine.irq2_pressed = false
+      cpuEngine.irq2_released = true
+
+    } catch (error) {
+      console.log(`Key ${event.key} is not supported`)
+    }
+  }
 
   useEffect(() => {
     function updateOutput() {
@@ -65,17 +126,25 @@ export default function OutputComponent() {
   }, [state.outputPayload])
 
 
-  useEffect(() => {
 
-    if (state.reset) {
-      setOutput([])
+  useEffect(() => {
+    function resetOutputIfNeeded () {
+      if (state.reset) {
+        setOutput([])
+      }
     }
+
+    resetOutputIfNeeded()
   }, [state.reset])
 
 
 
   return (
-    <div className="output">
+    <div className="output"
+    // onKeyDown={handleKeyDownEvent}
+    onKeyUp={handleKeyUpEvent}
+    tabIndex={0}
+    >
         {output.map((element, index) =>
           <span
             key={index}

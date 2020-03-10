@@ -2,7 +2,7 @@
  import Instruction from '../Instruction'
 import { REGISTER_VALUE_NAME_MAPPER } from '@/constants/registers'
 
-const ASSEMBLER_INSTRUCTION_EXPRESSION = ( sdestination ) => `neg.b [ ${sdestination} + 0x%08x]`
+const ASSEMBLER_INSTRUCTION_EXPRESSION = ( sdestination ) => `neg.b [ ${sdestination} + %s]`
 
 export default class NEG_B_MREG_XX extends Instruction {
 	constructor (memory, address, source, destination, symbolTable) {

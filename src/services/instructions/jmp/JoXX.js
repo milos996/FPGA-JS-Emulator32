@@ -1,6 +1,6 @@
 import Instruction from '../Instruction'
 
-const ASSEMBLER_INSTRUCTION_EXPRESSION = () => 'jo 0x%08x'
+const ASSEMBLER_INSTRUCTION_EXPRESSION = () => 'jo %s'
 
 export default class JO_XX extends Instruction {
 	constructor (memory, address, source, destination, symbolTable) {

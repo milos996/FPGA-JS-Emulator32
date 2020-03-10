@@ -45,3 +45,15 @@ export const COLORS_MAPPER = {
     7: COLORS[BLACK]
   }
 }
+
+const UP = 'ArrowUp'
+const DOWN = 'ArrowDown'
+const RIGHT = 'ArrowRight'
+const LEFT = 'ArrowLeft'
+
+export const KEY_VALUE_MAPPER = {
+  [UP]: 4000,
+  [DOWN]: 4002,
+  [RIGHT]: 4003,
+  [LEFT]: 4001
+}

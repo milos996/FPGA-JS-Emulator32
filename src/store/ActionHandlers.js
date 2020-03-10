@@ -1,7 +1,7 @@
 export function SET_MEMORY_HANDLER (currState, payload) {
   return {
     ...currState,
-    memory: payload
+    memory: [...payload]
   };
 }
 
@@ -11,8 +11,8 @@ export function SET_INSTRUCTIONS_HANDLER (
 ) {
   return {
     ...currState,
-    lines,
-    addressInstruction
+    lines: [...lines],
+    addressInstruction: {...addressInstruction}
   };
 }
 
@@ -86,5 +86,16 @@ export const CLEAR_ALL_BREAKPOINTS_HANDLER = (currState) => {
   return {
     ...currState,
     breakpoints: []
+  }
+}
+
+export const SET_VALUE_IN_MEMORY_HANDLER = (currState, { address, value }) => {
+  return {
+    ...currState,
+    memory: [
+      ...currState.memory.slice(0, address),
+      value,
+      ...currState.memory.slice(address + 1)
+    ]
   }
 }

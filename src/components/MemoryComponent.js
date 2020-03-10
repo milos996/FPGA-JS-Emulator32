@@ -6,7 +6,7 @@ import MemoryCell from '@/components/memory-component/MemoryCell';
 const GRID_HEADERS = ['Address', '0-1', '2-3', '4-5', '6-7']
 
 export default function MemoryComponent() {
-  const { dispatch, state } = useContext(ApplicationContext);
+  const { state } = useContext(ApplicationContext);
 
   return <div>
     <h2 style={{

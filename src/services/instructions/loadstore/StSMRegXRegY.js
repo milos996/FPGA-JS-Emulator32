@@ -10,7 +10,6 @@ export default class StSMRegXRegY extends Instruction {
 	}
 
 	exec ({ context, memory }) {
-		// TODO: -->> (short) context[REGISTER_VALUE_NAME_MAPPER[this.source]]
 		const address = Instruction.fix(context[REGISTER_VALUE_NAME_MAPPER[this.destination]])
 		const content = context[REGISTER_VALUE_NAME_MAPPER[this.source]]
 

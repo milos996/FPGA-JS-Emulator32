@@ -15,6 +15,7 @@ class CpuEngine {
 		this.memory = []
 		this.lines = []
 		this.addressInstruction = {}
+		this.symbolTable = {}
 
 		this.context = {}
 
@@ -31,6 +32,8 @@ class CpuEngine {
 		) {
 			this.prepareIrq()
 		}
+
+		console.log("PC: " + this.context.pc);
 
 		const instruction = this.addressInstruction[Instruction.fix(this.context.pc)]
 
@@ -54,19 +57,16 @@ class CpuEngine {
 		}
   }
 
-  prepareIrq() {
+  async prepareIrq() {
 		if (this.irq0 && this.memory[this.irq0_address] === 0) {
-			// synchronized (this) { this.notify() }
 			return
 		}
 
 		if (this.irq2_pressed && this.memory[this.irq2_pressed_address / 2] === 0) {
-			// synchronized (this) { this.notify() }
 			return
 		}
 
 		if (this.irq2_released && this.memory[this.irq2_released_address / 2] === 0) {
-			// synchronized (this) { this.notify() }
 			return
 		}
 
@@ -83,14 +83,15 @@ class CpuEngine {
 			// Jump to the IRQ1 handler
 			this.context.pc  = this.irq0_address
 
-			let instruction = CpuParserClass.getInstruction(this.memory, this.irq0_address)
-			instruction.setContent()
+			try {
+				let instruction = await CpuParserClass.getInstruction(this.irq0_address, this.memory, this.symbolTable)
 
-			this.lines[this.irq0_address] = instruction
+				instruction.setContent()
 
-			instruction.tableLine = this.irq0_address
-
-			this.addressInstruction[this.irq0_address] = instruction
+				this.addressInstruction[this.irq0_address] = instruction
+			} catch (error) {
+				console.log('Instruction does not exits')
+			}
 
 			this.irq0 = false
 		} else if (this.irq2_pressed) {
@@ -99,53 +100,37 @@ class CpuEngine {
 
 			this.context.pc  = this.irq2_pressed_address
 
-			let instruction = CpuParserClass.getInstruction(this.memory, this.irq2_pressed_address)
-			instruction.setContent()
+			try {
+				let instruction = await CpuParserClass.getInstruction(this.irq2_pressed_address, this.memory, this.symbolTable)
+				instruction.setContent()
 
-			this.lines[this.irq2_pressed_address]= instruction
-
-			instruction.tableLine = this.irq2_pressed_address
-
-			this.addressInstruction[this.irq2_pressed_address] = instruction
+				this.addressInstruction[this.irq2_pressed_address] = instruction
+			} catch (error) {
+				console.log('Instruction does not exits')
+			}
 		} else if (this.irq2_released) {
 			this.irq2_released = false
 			// Jump to the IRQ2 released handler
-
 			this.context.pc  = this.irq2_released_address
-
-			let instruction = CpuParserClass.getInstruction(this.memory, this.irq2_released_address)
-			instruction.setContent()
-
-			this.lines[this.irq2_released_address] = instruction
-
-			instruction.tableLine = this.irq2_released_address
-
-			this.addressInstruction[this.irq2_released_address] = instruction
+			try {
+				let instruction = await CpuParserClass.getInstruction(this.irq2_released_address, this.memory, this.symbolTable)
+				instruction.setContent()
+				this.addressInstruction[this.irq2_released_address] = instruction
+			} catch (error) {
+				console.log('Instruction does not exits')
+			}
 		}
-	}
-
-  stop() {
-			this.running = false
-
-		// if (this.fromStepOver) {
-		// 	this.fromStepOver = false
-		// 	Instruction i = context.mdl.addr_instr[Instruction.fix(context.pc )]
-		// 	if (i.breakPointStepOver) {
-		// 		i.breakPointStepOver = false
-		// 		this.context.mdl.fireTableDataChanged()
-		// 	}
-		// }
-		// refreshUI(context.mdl.addr_instr[Instruction.fix(context.pc )])
 	}
 
 	halt () {
 		this.running = false
 	}
 
-	inject(memory, lines, addressInstruction) {
+	inject(memory, lines, addressInstruction, symbolTable) {
 		this.memory = memory
 		this.lines = lines
 		this.addressInstruction = addressInstruction
+		this.symbolTable = symbolTable
 
 		this.context = {
 			r0: 0,
@@ -166,13 +151,6 @@ class CpuEngine {
 			sp: 0,
 			h: 0,
 			f: 0
-		}
-	}
-
-	setContextField(field, value) {
-		this.context = {
-			...this.context,
-			[field]: value
 		}
 	}
 }

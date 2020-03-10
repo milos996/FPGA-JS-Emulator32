@@ -50,8 +50,10 @@ code {
 }
 
 .home-part-1 {
-  width: 60%;
   padding: 10px;
+  /* width: 100%; */
+  max-width: 100%;
+  width: 100%;
   margin-right: 5px;
 }
 
@@ -81,4 +83,19 @@ code {
 
 .flex-auto {
   flex: auto;
+}
+
+.box :first-child {
+  width: 80%;
+}
+
+.box > * {
+  flex: 0 0 auto;
+}
+
+@media (max-width: 1200px) {
+  .horizontal-alignment.main {
+    display: flex;
+    flex-direction: column;
+  }
 }

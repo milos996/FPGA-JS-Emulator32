@@ -1,6 +1,6 @@
 import Instruction from '../Instruction'
 
-const ASSEMBLER_INSTRUCTION_EXPRESSION = () => 'jg 0x%08x'
+const ASSEMBLER_INSTRUCTION_EXPRESSION = () => 'jg %s'
 
 export default class JgXX extends Instruction {
 	constructor (memory, address, source, destination, symbolTable) {

@@ -7,7 +7,7 @@ export default class CmpWRegXX extends Instruction {
 	constructor (memory, address, source, destination, symbolTable) {
 		super(memory, address, source, destination, symbolTable)
 		super.setArgument32(memory)
-		super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION(this.sdestination))
+		super.setAssembler(ASSEMBLER_INSTRUCTION_EXPRESSION(this.sdestination), symbolTable)
 	}
 
 	exec ({ context }) {
