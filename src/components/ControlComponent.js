@@ -6,12 +6,13 @@ import { SET_MEMORY, SET_CONTEXT, UPDATE_OUTPUT, SET_SYMBOLS, HAS_SYMBOL_TABLE, 
 
 export default function ControlComponent() {
   const { dispatch, state } = useContext(ApplicationContext);
-  const [files, setFiles] = useState([]);
   const [iteration, setIteration] = useState(0)
   const [stopFlag, setStopFlag] = useState(() => false)
   const [startFlag, setStartFlag] = useState(() => false)
   const [stepOverFlag, setStepOverFlag] = useState(() => false)
   const [engineProcessedData, setEngineResponseData] = useState({ shouldRunAgain: true })
+
+  const [files, setFiles] = useState([]);
 
   function handleUploadFile(input) {
     const fileInput = input.currentTarget;
@@ -21,6 +22,39 @@ export default function ControlComponent() {
     setFiles(loadFiles);
     loadFiles.length > 1 && dispatch({ type: HAS_SYMBOL_TABLE, payload: true })
   }
+
+  useEffect(() => {
+    async function parseFile() {
+      if (files.length) {
+        let binFile = files[0]
+        let symFile = null
+
+        if (files.length > 1) {
+          binFile = files[0].name.includes('.bin')
+            ? files[0]
+            : files[1]
+
+          symFile = files[0].name.includes('.sym')
+            ? files[0]
+            : files[1]
+        }
+
+        const { data } = await fileParser.parse(binFile);
+        dispatch({ type: SET_MEMORY, payload: data });
+
+        if (symFile) {
+          const { data: symData } = await fileParser.parse(symFile)
+          dispatch({ type: SET_SYMBOLS, payload: symData})
+        }
+
+        return
+      }
+    }
+
+    parseFile();
+  }, [files]);
+
+
 
   async function handleStart() {
     if (!startFlag || (startFlag && !stopFlag)) {
@@ -126,4 +160,9 @@ export default function ControlComponent() {
       <button className="my-button" onClick={handleReset} disabled={!files.length}> Reset </button>
     </div>
   );
-        }
+}
+
+
+
+
+

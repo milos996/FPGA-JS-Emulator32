@@ -36,36 +36,6 @@ export default function OutputComponent() {
   const [output, setOutput] = useState([])
   const { dispatch, state } = useContext(ApplicationContext);
 
-  function handleKeyDownEvent (event) {
-    event.preventDefault();
-    try {
-      console.log(event.key);
-
-      const keyValue = KEY_VALUE_MAPPER[event.key]
-
-      if (!keyValue) {
-        throw new Error()
-      }
-
-      if (state.memory[cpuEngine.irq2_pressed_address / 2] === 0) {
-        return
-      }
-
-      dispatch({
-        type: SET_VALUE_IN_MEMORY,
-        payload: {
-          address: 24,
-          value: keyValue
-        }
-      })
-
-      cpuEngine.irq2_pressed = true
-      cpuEngine.irq2_released = false
-    } catch (error) {
-      console.log(`Key ${event.key} is not supported`)
-    }
-  }
-
   function handleKeyUpEvent (event) {
     event.preventDefault();
     try {
@@ -140,23 +110,23 @@ export default function OutputComponent() {
 
 
   return (
-    <div className="output"
-    // onKeyDown={handleKeyDownEvent}
-    onKeyUp={handleKeyUpEvent}
-    tabIndex={0}
+    <div
+      className="output"
+      onKeyUp={handleKeyUpEvent}
+      tabIndex={0}
     >
-        {output.map((element, index) =>
-          <span
-            key={index}
-            className="letter-spacing"
-            style={{
-              color: element.foregroundColor,
-              backgroundColor: element.backgroundColor
-            }}
-          >
-            {element.value}
-          </span>
-        )}
+      {output.map((element, index) =>
+        <span
+          key={index}
+          className="letter-spacing"
+          style={{
+            color: element.foregroundColor,
+            backgroundColor: element.backgroundColor
+          }}
+        >
+          {element.value}
+        </span>
+      )}
     </div>
   )
 }

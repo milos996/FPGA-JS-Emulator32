@@ -5,7 +5,6 @@ import { cpuParser } from '@/services/cpu/CpuParser';
 import { SET_INSTRUCTIONS, SET_BREAKPOINTS, CLEAR_ALL_BREAKPOINTS } from '@/store/Actions';
 import SingleInstruction from '@/components/instructions-component/SingleInstruction'
 import { COLORS } from '@/constants/general';
-import cpuEngine from '@/services/cpu/CpuEngine';
 
 const ROW_HEADER = [
   {
@@ -142,7 +141,10 @@ export default function InstructionsComponent() {
             pc={state.context.pc}
             hasBreakpoint={state.breakpoints.includes(state.addressInstruction[data[index]].address)}
             handleCheckboxInput={() => addInstructionBreakpoint(state.addressInstruction[data[index]].address)}
-            isCurrentBreakpoint={state.currentBreakpoint === state.addressInstruction[data[index]].address && state.addressInstruction[data[index]].address === state.context.pc}
+            isCurrentBreakpoint={
+              state.currentBreakpoint === state.addressInstruction[data[index]].address
+              && state.addressInstruction[data[index]].address === state.context.pc
+            }
           />
         )}
         </List>

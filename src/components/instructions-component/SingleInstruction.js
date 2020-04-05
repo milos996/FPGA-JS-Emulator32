@@ -1,5 +1,4 @@
 import React from 'react'
-import { convertToHexNumber } from '@/utils/general'
 import { COLORS } from '@/constants/general'
 
 export default function SingleInstruction({
@@ -32,7 +31,7 @@ export default function SingleInstruction({
 
   return (
     <div
-    style={{
+      style={{
       height: 30,
       width: 700,
       display: 'flex',

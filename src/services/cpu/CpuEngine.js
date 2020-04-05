@@ -33,8 +33,6 @@ class CpuEngine {
 			this.prepareIrq()
 		}
 
-		console.log("PC: " + this.context.pc);
-
 		const instruction = this.addressInstruction[Instruction.fix(this.context.pc)]
 
 		try {
